@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Install software and configs required for Emcomm Tools OS
+
+EMCOMM_TOOLS_TMP="$(mktemp -d)"
+pushd "$EMCOMM_TOOLS_TMP"
+git clone https://github.com/thetechprepper/emcomm-tools-os-community.git
+# Run software/config install only. Map/propigation data should probably be downloaded at runtime.
+#./scripts/install.sh
+touch /emcomm-tools-os-installed.flag # FIXME: really install stuff
+popd
+rm -rf "$EMCOMM_TOOLS_TMP"
+
