@@ -2,3 +2,8 @@
 cache
 chroot
 chroot.packages.install
+binary.modified_timestamps
+binary/*
+chroot.files
+chroot.packages.live
+live-image-*
