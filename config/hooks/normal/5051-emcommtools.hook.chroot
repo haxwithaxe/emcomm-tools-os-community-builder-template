@@ -7,7 +7,7 @@ pushd "$EMCOMM_TOOLS_TMP"
 git clone https://github.com/thetechprepper/emcomm-tools-os-community.git
 # Run software/config install only. Map/propigation data should probably be downloaded at runtime.
 #./scripts/install.sh
-touch /emcomm-tools-os-liveos.flag # FIXME: really install stuff
+touch /emcomm-tools-os-installed-to-disk.flag # FIXME: really install stuff
 popd
 rm -rf "$EMCOMM_TOOLS_TMP"
 
