@@ -8,7 +8,7 @@ fi
 set -ex
 
 lb clean
-lb config
+lb config --debian-installer live
 lb build
 
 # FIXME: Add upload step?
