@@ -8,3 +8,6 @@ chroot.files
 chroot.packages.live
 live-image-*
 .build.sh.conf
+!.build.sh.conf.example
+build.sh.d/deploy-iso-locally.post-build
+!build.sh.d/*.example
