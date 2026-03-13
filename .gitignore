@@ -7,3 +7,4 @@ binary/*
 chroot.files
 chroot.packages.live
 live-image-*
+.build.sh.conf
