@@ -1,0 +1,8 @@
+## Shared config for build.sh pre and post scripts.
+SRC_ISO_FILENAME=live-image-amd64.hybrid.iso
+
+## deploy-iso-locally.post config 
+# Set the directory to publish the new ISO 
+DEST_ISO_DIR=/storage/pve/installers/template/iso
+# Set a prefix for the desination filename
+DEST_ISO_PREFIX="000-"  # This gets it sorted first in the testing environment
