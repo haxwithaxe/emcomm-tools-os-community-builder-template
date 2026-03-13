@@ -1,0 +1,24 @@
+#!/bin/bash
+#
+# Publishes the build manifests to the sample-manifests directory.
+# Required Environment Variables
+#    BUILD_SH_REPO_DIR: The root of the build repository. Set in `build.sh`.
+
+
+set -e -o pipefail
+
+[[ -n "$BUILD_SH_REPO_DIR" ]] || (echo ERROR: BUILD_SH_REPO_DIR variable unset; exit 1)
+pushd "$BUILD_SH_REPO_DIR"
+
+# Load the shared config
+source .build.sh.conf
+
+
+# Copy the build manifests to the samples directory
+echo Copying *.files *.contents *.packages* to sample-manifests
+set -x
+cp *.files *.contents *.packages sample-manifests/
+echo "Last updated at $(date '+%Y-%m-%d %H:%M:%S %Z'), against the following commit:" > sample-manifests/last-updated.txt
+git log -1 --oneline >> sample-manifests/last-updated.txt
+
+popd  # Return the previous working directory

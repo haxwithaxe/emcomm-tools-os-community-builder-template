@@ -1,0 +1,58 @@
+#!/bin/bash
+#
+# Publishes the new ISO image to a local directory.
+#
+# Counterpart to deploy-iso-locally.post-clean-all
+#
+# Required Environment Variables
+#    BUILD_SH_REPO_DIR: The root of the build repository. Set in `build.sh`.
+#    DEST_ISO_DIR: The directory path to deploy the ISO into. Set in 
+#    	`.build.sh.conf`.
+#    SRC_ISO_FILENAME: The filename of the ISO output by the build process. 
+#    	Set in `.build.sh.conf`.
+#
+# Optional Environment Variables
+#    DEST_ISO_PREFIX: A prefix added to the desination filename. This can be 
+#    	used to get the image in a particular order in the destination 
+#    	directory.
+
+
+set -e -o pipefail
+
+[[ -n "$BUILD_SH_REPO_DIR" ]] || (echo ERROR: BUILD_SH_REPO_DIR variable unset; exit 1)
+pushd "$BUILD_SH_REPO_DIR"
+
+# Load the shared config
+source .build.sh.conf
+
+[[ -n "$DEST_ISO_DIR" ]] || (echo ERROR: DEST_ISO_DIR variable unset; exit 1)
+
+# If this is run in a git repo add the commit hash for tracking where an ISO came from.
+if [ -d .git ]; then
+	GIT_COMMIT=$(git log -1 --abbrev-commit --oneline | cut -d ' ' -f 1)
+else
+	GIT_COMMIT=nogit
+fi
+
+# Build the destination filename including the git commit short hash, the date, and the time.
+DEST_ISO_FILENAME="${DEST_ISO_PREFIX}emcomm-tools-os-testing-${GIT_COMMIT}-$(date +%Y-%m-%d_%H%M).iso"
+
+# Check for input and output locations and bail out if one of them doesn't 
+#   exist.
+if ! [ -d "$DEST_ISO_DIR" ]; then
+	echo Not deploying $SRC_ISO_FILENAME locally to $DEST_ISO_DIR/$DEST_ISO_FILENAME
+	echo ERROR: DEST_ISO_DIR "$DEST_ISO_DIR" not found
+	exit 1
+fi
+if ! [ -f "$SRC_ISO_FILENAME" ]; then
+	echo Not deploying $SRC_ISO_FILENAME locally to $DEST_ISO_DIR/$DEST_ISO_FILENAME
+	echo ERROR: SRC_ISO_FILENAME "$SRC_ISO_FILENAME" not found
+	exit 1
+fi
+
+# Copy the ISO to its destination.
+echo Deploying $SRC_ISO_FILENAME locally to $DEST_ISO_DIR/$DEST_ISO_FILENAME
+set -x
+cp "$SRC_ISO_FILENAME" "${DEST_ISO_DIR}/${DEST_ISO_FILENAME}"
+
+popd  # Return the previous working directory
