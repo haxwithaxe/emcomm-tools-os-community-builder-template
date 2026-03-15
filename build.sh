@@ -12,7 +12,7 @@ export BUILD_SH_REPO_DIR="$(dirname "$0")"
 
 print_usage() {
 	cat - 1>&2 <<EOF
-Usage: $(basename "$0") [-h|--help] [-b|--build] [-c|--clean] [--clean-all]
+Usage: $(basename "$0") [-h|--help] [-b|--build] [-c|--clean|--clean-all] [--config|--post-build|--pre-build]
     This must be run as root so the build tools can create and manage chroots.
     -h|--help: Print this message.
     -b|--build|<no arguments>: Run the pre-build scripts, post-build scripts, 
@@ -21,6 +21,9 @@ Usage: $(basename "$0") [-h|--help] [-b|--build] [-c|--clean] [--clean-all]
 		scripts, and build environment clean up.
     --clean-all: Deep cleaning. Run the pre-clean-all scripts, post-clean-all 
 		scripts, and build environment clean up.
+    --config: Run just the config step of the build process.
+    --post-build: Run just the post-build scripts.
+    --pre-build: Run just the pre-build scripts.
 EOF
 }
 
@@ -33,6 +36,8 @@ clean_all() {
 		for script in build.sh.d/*.pre-clean-all; do
 			"./$script"
 		done
+	else
+		echo Skipping pre-clean-all scripts
 	fi
 
 	clean
@@ -42,6 +47,8 @@ clean_all() {
 		for script in build.sh.d/*.post-clean-all; do
 			"./$script"
 		done
+	else
+		echo Skipping post-clean-all scripts
 	fi
 }
 
@@ -52,7 +59,11 @@ clean() {
 		for script in build.sh.d/*.pre-clean; do
 			"./$script"
 		done
+	else
+		echo Skipping pre-clean scripts
 	fi
+
+	echo "Running clean step"
 
 	set -x
 
@@ -65,32 +76,59 @@ clean() {
 		for script in build.sh.d/*.post-clean; do
 			"./$script"
 		done
+	else
+		echo Skipping post-clean scripts
 	fi
 }
 
-# Run the scripts that build and test or support either.
-build() {
-	if compgen -G 'build.sh.d/*.pre-build'; then
-		echo Running pre-build scripts
-		for script in build.sh.d/*.pre-build; do
-			"./$script"
-		done
-	fi
+config() {
+	echo Running config step
 
 	set -x
 
 	lb config --debian-installer live
-	lb build
 
 	set +x
+}
 
+post_build() {
 	if compgen -G 'build.sh.d/*.post-build'; then
 		echo Running post-build scripts
 		for script in build.sh.d/*.post-build; do
 			"./$script"
 		done
+	else
+		echo Skipping post-build scripts
 	fi
-	# FIXME: Add upload step?
+}
+
+
+pre_build() {
+	if compgen -G 'build.sh.d/*.pre-build'; then
+		echo Running pre-build scripts
+		for script in build.sh.d/*.pre-build; do
+			"./$script"
+		done
+	else
+		echo Skipping pre-build scripts
+	fi
+}
+
+
+# Run the scripts that build and test or support either.
+build() {
+	pre_build
+
+	config
+	
+	echo Running build step
+	
+	set -x
+
+	lb build
+
+	set +x
+	post_build
 }
 
 
@@ -98,52 +136,62 @@ main() {
 	local do_build=false
 	local do_clean=false
 	local do_clean_all=false
-
-	OPTS=$(getopt -a -o hbc --long help,build,clean,clean-all -- "$@") || getopt_rc=$?
-	# If getopt failed because it got no arguments assume the user wants to 
-	#   clean and build.
-	if [[ "$getopt_rc" != "0" ]]; then
-		if [[ "${#@}" != "0" ]]; then
-			print_usage
-			exit 1
-		fi
-		do_clean=true
-		do_build=true
-	else
-		while true; do
-			case $1 in
-				-h|--help)
-					print_usage
-					exit 1
-					;;
-				-c|--clean)
-					# Don't run both clean and clean-all
-					$do_clean_all || continue
-					do_clean=true
-					exit 0
-					;;
-				-b|--build)
+	OPTS=$(getopt --name "$(basename "$0")" --options hbc --longoptions help,build,clean,clean-all,config,post-build,pre-build -- $*) || getopt_rc=$? 
+	eval set -- "$OPTS"
+	while (($#)); do
+		echo $1
+		case $1 in
+			-h|--help)
+				print_usage
+				exit 1
+				;;
+			-c|--clean)
+				# Don't run both clean and clean-all
+				shift
+				$do_clean_all && continue
+				do_clean=true
+				;;
+			--config)
+				shift
+				config
+				exit 0
+				;;
+			--post-build)
+				shift
+				post_build
+				exit 0
+				;;
+			--pre-build)
+				shift
+				pre_build
+				exit 0
+				;;
+			-b|--build)
+				shift
+				do_build=true
+				;;
+			--clean-all)
+				shift
+				do_clean_all=true
+				# Don't run both clean and clean-all
+				do_clean=false  
+				;;
+			--)
+				shift
+				if ! $do_build && ! $do_clean && ! $do_clean_all; then
 					do_build=true
-					shift
-					;;
-				--clean-all)
-					do_clean_all=true
-					# Don't run both clean and clean-all
-					do_clean=false  
-					shift
-					;;
-				--)
-					shift
-					break
-					;;
-				*)
-					echo ERROR: Unknown argument "$1"
-					print_usage
-					exit 1
-					;;
-			esac
-		done
-	fi
+					do_clean=true
+				fi
+				break
+				;;
+			*)
+				echo ERROR: Unknown argument "$1"
+				shift
+				print_usage
+				exit 1
+				;;
+		esac
+	done
 	# Allow clean_all to be run before build when arguments are given together.
 	if $do_clean_all; then
 		clean_all
@@ -157,6 +205,6 @@ main() {
 }
 
 
-main $@
+main $*
 
 

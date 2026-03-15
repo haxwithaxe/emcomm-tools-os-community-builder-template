@@ -1,0 +1,16 @@
+#!/bin/bash
+#
+# Required Environment Variables
+#    BUILD_SH_REPO_DIR: The root of the build repository. Set in `build.sh`.
+
+set -e -o pipefail
+
+[[ -n "$BUILD_SH_REPO_DIR" ]] || (echo ERROR: BUILD_SH_REPO_DIR variable unset; exit 1)
+pushd "$BUILD_SH_REPO_DIR" >/dev/null
+
+# Load the shared config
+source .build.sh.conf
+
+run_hook
+
+popd >/dev/null  # Return the previous working directory

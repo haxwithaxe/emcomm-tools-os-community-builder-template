@@ -1,0 +1,17 @@
+#!/bin/bash
+#
+# Fixes magically appearing duplicate instances of the value of `LB_BOOTAPPEND_INSTALL` in `config/binary`
+# Required Environment Variables
+#    BUILD_SH_REPO_DIR: The root of the build repository. Set in `build.sh`.
+
+
+set -e -o pipefail
+
+run_hook() {
+	# Fix the replicating `file=...`
+	echo "Fixing the replicating 'file=...' in 'config/binary'"
+	set -x
+	sed -i 's/file=\/cdrom\/install\/preseed\/preseed.cfg //g' config/binary
+}
+
+source "$(dirname "$0")/common"

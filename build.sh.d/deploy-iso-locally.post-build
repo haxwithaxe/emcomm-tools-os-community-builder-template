@@ -16,39 +16,35 @@
 
 set -e -o pipefail
 
-[[ -n "$BUILD_SH_REPO_DIR" ]] || (echo ERROR: BUILD_SH_REPO_DIR variable unset; exit 1)
-pushd "$BUILD_SH_REPO_DIR"
+run_hook() {
+	[[ -n "$DEST_ISO_DIR" ]] || (echo ERROR: DEST_ISO_DIR variable unset; exit 1)
 
-# Load the shared config
-source .build.sh.conf
+	# If this is run in a git repo add the commit hash for tracking where an ISO came from.
+	if [ -d .git ]; then
+		GIT_COMMIT=$(git log -1 --abbrev-commit --oneline | cut -d ' ' -f 1)
+	else
+		GIT_COMMIT=nogit
+	fi
+	# Build the destination filename including the git commit short hash, the date, and the time.
+	DEST_ISO_FILENAME="${DEST_ISO_PREFIX}emcomm-tools-os-testing-${GIT_COMMIT}-$(date +%Y-%m-%d_%H%M).iso"
 
-[[ -n "$DEST_ISO_DIR" ]] || (echo ERROR: DEST_ISO_DIR variable unset; exit 1)
+	# Check for input and output locations and bail out if one of them doesn't 
+	#   exist.
+	if ! [ -d "$DEST_ISO_DIR" ]; then
+		echo Not deploying $SRC_ISO_FILENAME locally to $DEST_ISO_DIR/$DEST_ISO_FILENAME
+		echo ERROR: DEST_ISO_DIR "$DEST_ISO_DIR" not found
+		exit 1
+	fi
+	if ! [ -f "$SRC_ISO_FILENAME" ]; then
+		echo Not deploying $SRC_ISO_FILENAME locally to $DEST_ISO_DIR/$DEST_ISO_FILENAME
+		echo ERROR: SRC_ISO_FILENAME "$SRC_ISO_FILENAME" not found
+		exit 1
+	fi
 
-# If this is run in a git repo add the commit hash for tracking where an ISO came from.
-if [ -d .git ]; then
-	GIT_COMMIT=$(git log -1 --abbrev-commit --oneline | cut -d ' ' -f 1)
-else
-	GIT_COMMIT=nogit
-fi
-# Build the destination filename including the git commit short hash, the date, and the time.
-DEST_ISO_FILENAME="${DEST_ISO_PREFIX}emcomm-tools-os-testing-${GIT_COMMIT}-$(date +%Y-%m-%d_%H%M).iso"
+	# Copy the ISO to its destination.
+	echo Deploying $SRC_ISO_FILENAME locally to $DEST_ISO_DIR/$DEST_ISO_FILENAME
+	set -x
+	cp "$SRC_ISO_FILENAME" "${DEST_ISO_DIR}/${DEST_ISO_FILENAME}"
+}
 
-# Check for input and output locations and bail out if one of them doesn't 
-#   exist.
-if ! [ -d "$DEST_ISO_DIR" ]; then
-	echo Not deploying $SRC_ISO_FILENAME locally to $DEST_ISO_DIR/$DEST_ISO_FILENAME
-	echo ERROR: DEST_ISO_DIR "$DEST_ISO_DIR" not found
-	exit 1
-fi
-if ! [ -f "$SRC_ISO_FILENAME" ]; then
-	echo Not deploying $SRC_ISO_FILENAME locally to $DEST_ISO_DIR/$DEST_ISO_FILENAME
-	echo ERROR: SRC_ISO_FILENAME "$SRC_ISO_FILENAME" not found
-	exit 1
-fi
-
-# Copy the ISO to its destination.
-echo Deploying $SRC_ISO_FILENAME locally to $DEST_ISO_DIR/$DEST_ISO_FILENAME
-set -x
-cp "$SRC_ISO_FILENAME" "${DEST_ISO_DIR}/${DEST_ISO_FILENAME}"
-
-popd  # Return the previous working directory
+source "$(dirname "$0")/common"
