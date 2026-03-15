@@ -1,0 +1,10 @@
+[Unit]
+Description=Create a flag file with timestamp on first boot
+After=local-fs.target
+
+[Service]
+type=oneshot
+ExecStart=/first-boot.sh
+
+[Install]
+WantedBy=multi-user.target
