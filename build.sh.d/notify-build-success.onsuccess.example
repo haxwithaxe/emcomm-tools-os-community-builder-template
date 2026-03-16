@@ -1,0 +1,42 @@
+#!/bin/bash
+#
+# Sends a notification via a ntfy.sh server on build stage success.
+#
+# `ntfyr` is a ntfy.sh client written in python. It can be installed with 
+#   `pipx` with the command `sudo pipx install --global ntfyr` for system-wide
+#   availability or `pipx install ntfyr` for individual users. For this script 
+#   to work it needs to be available to root.
+#
+# This script also assumes that a config file is in one of the default 
+#   locations. In this case either of the following are appropriate.
+# * `/root/.config/ntfyr/config.ini`
+# * `/etc/ntfyr/config.ini`
+#
+# The token or username and password are required in that config file and a 
+#   custom server is recommended if you have the ability to self-host it.
+#
+# See https://github.com/haxwithaxe/ntfyr for more detailed info on the config
+#   file structure.
+#
+#
+# Required Environment Variables
+#    BUILD_SH_REPO_DIR: The root of the build repository. Set in `build.sh`.
+#    ONFAIL_NOTIFICATION_CHANNEL: The ntfy.sh channel name to send the alert to.
+
+
+
+set -e -o pipefail
+
+run_hook() {
+	# If the stage isn't build this hook shouldn't do anything
+	[[ "$1" != "build" ]] && return 0
+	[[ -n "$ONSUCCESS_NOTIFICATION_CHANNEL" ]] || (echo Missing variable ONSUCCESS_NOTIFICATION_CHANNEL; exit 1)
+	local stage="$(echo "$1" | sed 's/^./\U&/')"  # Title case the stage name
+	shift 2
+	local message="$@"
+	set -x
+	ntfyr -T "Em Comm Tools OS Build Finished" -t "$ONSUCCESS_NOTIFICATION_CHANNEL" --timestamp -m "$message"
+	set +x
+}
+
+source "$(dirname "$0")/common"

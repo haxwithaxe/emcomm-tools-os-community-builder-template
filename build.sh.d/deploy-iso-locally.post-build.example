@@ -3,14 +3,14 @@
 # Publishes the new ISO image to a local directory.
 # Required Environment Variables
 #    BUILD_SH_REPO_DIR: The root of the build repository. Set in `build.sh`.
-#    DEST_ISO_DIR: The directory path to deploy the ISO into. Set in 
+#    DEST_ISO_DIR: The directory path to deploy the ISO into. Set in
 #    	`.build.sh.conf`.
-#    SRC_ISO_FILENAME: The filename of the ISO output by the build process. 
+#    SRC_ISO_FILENAME: The filename of the ISO output by the build process.
 #    	Set in `.build.sh.conf`.
 #
 # Optional Environment Variables
-#    DEST_ISO_PREFIX: A prefix added to the desination filename. This can be 
-#    	used to get the image in a particular order in the destination 
+#    DEST_ISO_PREFIX: A prefix added to the desination filename. This can be
+#    	used to get the image in a particular order in the destination
 #    	directory.
 
 
@@ -26,9 +26,9 @@ run_hook() {
 		GIT_COMMIT=nogit
 	fi
 	# Build the destination filename including the git commit short hash, the date, and the time.
-	DEST_ISO_FILENAME="${DEST_ISO_PREFIX}emcomm-tools-os-testing-${GIT_COMMIT}-$(date +%Y-%m-%d_%H%M).iso"
+	DEST_ISO_FILENAME="${DEST_ISO_PREFIX}$(date +%Y-%m-%d_%H%M)-${DEST_ISO_BASE_FILENAME%.iso}-${GIT_COMMIT}.iso"
 
-	# Check for input and output locations and bail out if one of them doesn't 
+	# Check for input and output locations and bail out if one of them doesn't
 	#   exist.
 	if ! [ -d "$DEST_ISO_DIR" ]; then
 		echo Not deploying $SRC_ISO_FILENAME locally to $DEST_ISO_DIR/$DEST_ISO_FILENAME
