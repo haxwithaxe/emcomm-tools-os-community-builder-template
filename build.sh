@@ -15,11 +15,11 @@ print_usage() {
 Usage: $(basename "$0") [-h|--help] [-b|--build] [-c|--clean|--clean-all] [--config|--post-build|--pre-build]
     This must be run as root so the build tools can create and manage chroots.
     -h|--help: Print this message.
-    -b|--build|<no arguments>: Run the pre-build scripts, post-build scripts, 
+    -b|--build|<no arguments>: Run the pre-build scripts, post-build scripts,
     	and the build process.
-    -c|--clean: Cursory cleaning. Run the pre-clean scripts, post-clean 
+    -c|--clean: Cursory cleaning. Run the pre-clean scripts, post-clean
 		scripts, and build environment clean up.
-    --clean-all: Deep cleaning. Run the pre-clean-all scripts, post-clean-all 
+    --clean-all: Deep cleaning. Run the pre-clean-all scripts, post-clean-all
 		scripts, and build environment clean up.
     --config: Run just the config step of the build process.
     --post-build: Run just the post-build scripts.
@@ -28,7 +28,7 @@ EOF
 }
 
 
-# Run the scripts that do the deep cleaning like purging deployed test ISOs as 
+# Run the scripts that do the deep cleaning like purging deployed test ISOs as
 # 	well as a regular clean.
 clean_all() {
 	if compgen -G 'build.sh.d/*.pre-clean-all'; then
@@ -40,7 +40,7 @@ clean_all() {
 		echo Skipping pre-clean-all scripts
 	fi
 
-	clean
+	clean --all
 
 	if compgen -G 'build.sh.d/*.post-clean-all'; then
 		echo Running post-clean-all scripts
@@ -67,7 +67,7 @@ clean() {
 
 	set -x
 
-	lb clean
+	lb clean $@
 
 	set +x
 
@@ -91,6 +91,30 @@ config() {
 	set +x
 }
 
+onfail() {
+	if compgen -G 'build.sh.d/*.onfail'; then
+		echo Running on-fail scripts
+		for script in build.sh.d/*.onfail; do
+			"./$script" $@
+		done
+	else
+		echo No on-fail scripts
+	fi
+}
+
+
+onsuccess() {
+	if compgen -G 'build.sh.d/*.onsuccess'; then
+		echo Running on-success scripts
+		for script in build.sh.d/*.onsuccess; do
+			"./$script" $@
+		done
+	else
+		echo No on-fail scripts
+	fi
+}
+
+
 post_build() {
 	if compgen -G 'build.sh.d/*.post-build'; then
 		echo Running post-build scripts
@@ -98,7 +122,7 @@ post_build() {
 			"./$script"
 		done
 	else
-		echo Skipping post-build scripts
+		echo No post-build scripts
 	fi
 }
 
@@ -110,7 +134,7 @@ pre_build() {
 			"./$script"
 		done
 	else
-		echo Skipping pre-build scripts
+		echo No pre-build scripts
 	fi
 }
 
@@ -120,9 +144,9 @@ build() {
 	pre_build
 
 	config
-	
+
 	echo Running build step
-	
+
 	set -x
 
 	lb build
@@ -136,7 +160,7 @@ main() {
 	local do_build=false
 	local do_clean=false
 	local do_clean_all=false
-	OPTS=$(getopt --name "$(basename "$0")" --options hbc --longoptions help,build,clean,clean-all,config,post-build,pre-build -- $*) || getopt_rc=$? 
+	OPTS=$(getopt --name "$(basename "$0")" --options hbc --longoptions help,build,clean,clean-all,config,post-build,pre-build -- $*) || getopt_rc=$?
 	eval set -- "$OPTS"
 	while (($#)); do
 		echo $1
@@ -174,7 +198,7 @@ main() {
 				shift
 				do_clean_all=true
 				# Don't run both clean and clean-all
-				do_clean=false  
+				do_clean=false
 				;;
 			--)
 				shift
@@ -194,17 +218,24 @@ main() {
 	done
 	# Allow clean_all to be run before build when arguments are given together.
 	if $do_clean_all; then
-		clean_all
+		clean_all \
+			&& onsuccess "clean-all" $? "Clean-all stage finished successfully" \
+			|| onfail "clean-all" "$?" "Clean-all stage failed with return code $?"
 	fi
 	if $do_clean; then
-		clean
+		clean \
+			&& onsuccess "clean" $? "Clean stage finished successfully" \
+			|| onfail "clean" "$?" "Clean stage failed with return code $?"
+
 	fi
 	if $do_build; then
-		build
+		build \
+			&& onsuccess "build" $? "Build stage finished successfully" \
+			|| onfail "build" "$?" "Build stage failed with return code $?"
 	fi
 }
 
 
 main $*
 
-
+# vim: set tabstop=4 shiftwidth=4 noexpandtab:
