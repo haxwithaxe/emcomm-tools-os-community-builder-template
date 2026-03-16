@@ -11,6 +11,7 @@ pushd "$BUILD_SH_REPO_DIR" >/dev/null
 # Load the shared config
 source .build.sh.conf
 
-run_hook
+# onfail/onsuccess scripts get the arguments given to the `onfail`/`onsuccess` functions.
+run_hook "$@"
 
 popd >/dev/null  # Return the previous working directory
