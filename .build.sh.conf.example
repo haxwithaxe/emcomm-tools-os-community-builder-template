@@ -1,8 +1,21 @@
 ## Shared config for build.sh pre and post scripts.
-SRC_ISO_FILENAME=live-image-amd64.hybrid.iso
 
-## deploy-iso-locally.post config 
-# Set the directory to publish the new ISO 
-DEST_ISO_DIR=/storage/pve/installers/template/iso
+## deploy-iso-locally.post config
 # Set a prefix for the desination filename
-DEST_ISO_PREFIX="000-"  # This gets it sorted first in the testing environment
+reverse_sortable_prefix() {
+	# Prepare reverse sortable (newest first alphabetically) prefix
+	local max_timestamp=4294967295
+	local timestamp=$(date +%s)
+	echo "$(( $max_timestamp - $timestamp ))-"
+}
+DEST_ISO_PREFIX_BASE="000"
+DEST_ISO_PREFIX="${DEST_ISO_PREFIX_BASE}$(reverse_sortable_prefix)"
+# Set the directory to publish the new ISO
+DEST_ISO_DIR=/storage/pve/installers/template/iso
+# The base for the destination ISO filename (with or without ".iso")
+DEST_ISO_BASE_FILENAME="emcomm-tools-os-testing.iso"
+# The name of the iso output by "lb build" from the build stage
+SRC_ISO_FILENAME=live-image-amd64.hybrid.iso
+# The ntfy.sh topics to use when sending alerts
+ONFAIL_NOTIFICATION_CHANNEL=alerts
+ONSUCCESS_NOTIFICATION_CHANNEL=alerts
