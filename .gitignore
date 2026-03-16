@@ -10,4 +10,7 @@ live-image-*
 .build.sh.conf
 !.build.sh.conf.example
 build.sh.d/deploy-iso-locally.post-build
+build.sh.d/deploy-iso-locally.post-clean-all
+build.sh.d/notify-build-success.onsuccess
+build.sh.d/notify-stage-failed.onfail
 !build.sh.d/*.example
