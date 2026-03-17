@@ -1,6 +1,6 @@
+# Build artifacts
 .build
 .lock
-*.log
 *.*_tmp_*
 cache
 chroot
@@ -10,10 +10,23 @@ binary/*
 chroot.files
 chroot.packages.live
 live-image-*
+
+# Sneaky build cruft that doesn't get cleaned up
+config/package-lists/live.list.chroot
+
+## build.sh stuff
+# build.sh config file
 .build.sh.conf
+# Keep track of the examples
 !.build.sh.conf.example
+
+# build.sh hook scripts that are optional
 build.sh.d/deploy-iso-locally.post-build
 build.sh.d/deploy-iso-locally.post-clean-all
 build.sh.d/notify-build-success.onsuccess
 build.sh.d/notify-stage-failed.onfail
+# Keep track of the examples
 !build.sh.d/*.example
+
+# build.sh logs
+*.log
