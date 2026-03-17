@@ -40,7 +40,7 @@ run_hook() {
 	# Copy the ISO to its destination.
 	echo Pruning ${DEST_ISO_FILENAME_PATTERN}*.iso locally from $DEST_ISO_DIR
 	set -x
-	find "${DEST_ISO_DIR}" -xdev -type f -name "${DEST_ISO_FILENAME_PATTERN}" #-delete
+	find "${DEST_ISO_DIR}" -xdev -type f -name "${DEST_ISO_FILENAME_PATTERN}" -delete
 }
 
 source "$(dirname "$0")/common"
