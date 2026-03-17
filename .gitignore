@@ -1,4 +1,7 @@
 .build
+.lock
+*.log
+*.*_tmp_*
 cache
 chroot
 chroot.packages.install
