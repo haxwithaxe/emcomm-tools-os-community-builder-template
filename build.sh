@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -e -o pipefail
 
 if [ "$(whoami)" != "root" ]; then
 	echo "This must be run as root"
@@ -12,7 +12,7 @@ export BUILD_SH_REPO_DIR="$(dirname "$0")"
 
 print_usage() {
 	cat - 1>&2 <<EOF
-Usage: $(basename "$0") [-h|--help] [-b|--build] [-c|--clean|--clean-all] [--config|--post-build|--pre-build]
+Usage: $(basename "$0") [-h|--help] [-b|--build] [-c|--clean|--clean-all] [--config|--post-build|--pre-build] [--log|--no-log]
     This must be run as root so the build tools can create and manage chroots.
     -h|--help: Print this message.
     -b|--build|<no arguments>: Run the pre-build scripts, post-build scripts,
@@ -22,6 +22,8 @@ Usage: $(basename "$0") [-h|--help] [-b|--build] [-c|--clean|--clean-all] [--con
     --clean-all: Deep cleaning. Run the pre-clean-all scripts, post-clean-all
 		scripts, and build environment clean up.
     --config: Run just the config step of the build process.
+	--log: Log the output of this script without removing the colors in stdout.
+	--no-log: For internal use. It just negates --log when both are used.
     --post-build: Run just the post-build scripts.
     --pre-build: Run just the pre-build scripts.
 EOF
@@ -34,10 +36,10 @@ clean_all() {
 	if compgen -G 'build.sh.d/*.pre-clean-all'; then
 		echo Running pre-clean-all scripts
 		for script in build.sh.d/*.pre-clean-all; do
-			"./$script"
+			"./$script" || return $?
 		done
 	else
-		echo Skipping pre-clean-all scripts
+		echo No pre-clean-all scripts
 	fi
 
 	clean --all
@@ -45,51 +47,54 @@ clean_all() {
 	if compgen -G 'build.sh.d/*.post-clean-all'; then
 		echo Running post-clean-all scripts
 		for script in build.sh.d/*.post-clean-all; do
-			"./$script"
+			"./$script" || return $?
 		done
 	else
-		echo Skipping post-clean-all scripts
+		echo No post-clean-all scripts
 	fi
 }
+
 
 # Run the scripts that do build directory clean up.
 clean() {
 	if compgen -G 'build.sh.d/*.pre-clean'; then
 		echo Running pre-clean scripts
 		for script in build.sh.d/*.pre-clean; do
-			"./$script"
+			"./$script" || return $?
 		done
 	else
-		echo Skipping pre-clean scripts
+		echo No pre-clean scripts
 	fi
 
 	echo "Running clean step"
 
 	set -x
 
-	lb clean $@
+	lb clean $@ || return $?
 
 	set +x
 
 	if compgen -G 'build.sh.d/*.post-clean'; then
 		echo Running post-clean scripts
 		for script in build.sh.d/*.post-clean; do
-			"./$script"
+			"./$script" || return $?
 		done
 	else
-		echo Skipping post-clean scripts
+		echo No post-clean scripts
 	fi
 }
+
 
 config() {
 	echo Running config step
 
 	set -x
 
-	lb config --debian-installer live
+	lb config --debian-installer live || return $?
 
 	set +x
 }
+
 
 onfail() {
 	if compgen -G 'build.sh.d/*.onfail'; then
@@ -119,7 +124,7 @@ post_build() {
 	if compgen -G 'build.sh.d/*.post-build'; then
 		echo Running post-build scripts
 		for script in build.sh.d/*.post-build; do
-			"./$script"
+			"./$script" || return $?
 		done
 	else
 		echo No post-build scripts
@@ -131,7 +136,7 @@ pre_build() {
 	if compgen -G 'build.sh.d/*.pre-build'; then
 		echo Running pre-build scripts
 		for script in build.sh.d/*.pre-build; do
-			"./$script"
+			"./$script" || return $?
 		done
 	else
 		echo No pre-build scripts
@@ -141,18 +146,18 @@ pre_build() {
 
 # Run the scripts that build and test or support either.
 build() {
-	pre_build
+	pre_build || return $?
 
-	config
+	config || return $?
 
 	echo Running build step
 
 	set -x
 
-	lb build
+	lb build || return $?
 
 	set +x
-	post_build
+	post_build || return $?
 }
 
 
@@ -160,7 +165,10 @@ main() {
 	local do_build=false
 	local do_clean=false
 	local do_clean_all=false
-	OPTS=$(getopt --name "$(basename "$0")" --options hbc --longoptions help,build,clean,clean-all,config,post-build,pre-build -- $*) || getopt_rc=$?
+	local do_log=false
+	local no_log=false
+	local orig_opts="$@"
+	OPTS=$(getopt --name "$(basename "$0")" --options hbc --longoptions help,build,clean,clean-all,config,log,no-log,post-build,pre-build -- $*) || getopt_rc=$?
 	eval set -- "$OPTS"
 	while (($#)); do
 		echo $1
@@ -200,6 +208,18 @@ main() {
 				# Don't run both clean and clean-all
 				do_clean=false
 				;;
+			--no-log)
+				shift
+				# Don't do_log if --no-log so there isn't an infinte loop
+				do_log=false
+				no_log=true
+				;;
+			--log)
+				shift
+				# Don't do_log if --no-log so there isn't an infinte loop
+				$no_log && continue
+				do_log=true
+				;;
 			--)
 				shift
 				if ! $do_build && ! $do_clean && ! $do_clean_all; then
@@ -216,6 +236,13 @@ main() {
 				;;
 		esac
 	done
+	# Log but keep the pretty colors in stdout/stderr
+	if $do_log; then
+		# unbuffer only works on executables not functions
+		unbuffer $0 "--no-log $orig_opts" | tee "build-$(git log -1 --abbrev-commit --oneline | cut -d ' ' -f 1)-$(date +%F-%T).log" || exit 1
+		exit 0
+	fi
+	set -e -o pipefail  # DEBUG: this shouldn't need to be here
 	# Allow clean_all to be run before build when arguments are given together.
 	if $do_clean_all; then
 		clean_all \
@@ -236,6 +263,4 @@ main() {
 }
 
 
-main $*
-
-# vim: set tabstop=4 shiftwidth=4 noexpandtab:
+main $* 
