@@ -23,6 +23,11 @@ Usage: $(basename "$0") [-h|--help] [-b|--build] [-c|--clean|--clean-all] [--con
 		scripts, and build environment clean up.
     --config: Run just the config step of the build process.
 	--log: Log the output of this script without removing the colors in stdout.
+		The "unbuffer" command from the "expect" package is required for this 
+		to work as expected. If it is not available the build will continue 
+		without redirecting to a log file afer showing a brief message and 
+		pausing momentarily for you to read it. After the pause the script will 
+		continue as if this option was not given.
 	--no-log: For internal use. It just negates --log when both are used.
     --post-build: Run just the post-build scripts.
     --pre-build: Run just the pre-build scripts.
@@ -90,6 +95,8 @@ config() {
 
 	set -x
 
+	# FIXME: Maybe? 'live' should probably be 'cdrom' once 
+	#   packages are included in the  ISO.
 	lb config --debian-installer live || return $?
 
 	set +x
@@ -171,7 +178,6 @@ main() {
 	OPTS=$(getopt --name "$(basename "$0")" --options hbc --longoptions help,build,clean,clean-all,config,log,no-log,post-build,pre-build -- $*) || getopt_rc=$?
 	eval set -- "$OPTS"
 	while (($#)); do
-		echo $1
 		case $1 in
 			-h|--help)
 				print_usage
@@ -238,12 +244,39 @@ main() {
 	done
 	# Log but keep the pretty colors in stdout/stderr
 	if $do_log; then
-		# unbuffer only works on executables not functions
-		unbuffer $0 "--no-log $orig_opts" | tee "build-$(git log -1 --abbrev-commit --oneline | cut -d ' ' -f 1)-$(date +%F-%T).log" || exit 1
-		exit 0
+		if which -s unbuffer; then
+			# unbuffer only works on executables not functions
+			unbuffer $0 "--no-log $orig_opts" \
+				| tee "build-$(\
+					git log -1 --abbrev-commit --oneline \
+					| cut -d ' ' -f 1\
+				)-$(date +%F-%T).log" \
+				|| exit 1
+			exit 0
+		else
+			# In case the unbuffer executable isn't available
+			echo 'The "unbuffer" executable was not found in $PATH. The Debian '\
+				'package "expect" is needed to use the fancy logging feature.'
+			echo 'To get log in the same way without the pretty colors you '\
+				'can abort now with Ctl-c and use the following command:'
+			if [[ -n "$SUDO_USER" ]]; then
+				echo '$ sudo' $0 "$orig_opts" \
+				'| tee "build-$('\
+					'git log -1 --abbrev-commit --oneline '\
+					'| cut -d ' ' -f 1'\
+				')-$(date +%F-%T).log"' 
+			else
+				echo '#' $0 "$orig_opts" \
+				'| tee "build-$('\
+					'git log -1 --abbrev-commit --oneline '\
+					'| cut -d ' ' -f 1'\
+				')-$(date +%F-%T).log"' 
+			fi
+			sleep 5  # Give the user a moment to read
+			echo 'Now continuing with out redirecting to a log file.'
+		fi
 	fi
-	set -e -o pipefail  # DEBUG: this shouldn't need to be here
-	# Allow clean_all to be run before build when arguments are given together.
+	# Allow clean_all or clean to be run before build when arguments are given together.
 	if $do_clean_all; then
 		clean_all \
 			&& onsuccess "clean-all" $? "Clean-all stage finished successfully" \
