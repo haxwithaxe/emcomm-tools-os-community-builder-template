@@ -35,6 +35,7 @@ dbus-session-bus-common	1.16.2-2
 dbus-system-bus-common	1.16.2-2
 debconf	1.5.91
 debconf-i18n	1.5.91
+debconf-utils	1.5.91
 debian-archive-keyring	2025.1
 debian-installer-launcher	44
 debianutils	5.23.2
