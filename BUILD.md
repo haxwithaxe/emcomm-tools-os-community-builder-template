@@ -1,16 +1,16 @@
 # Build Instructions
 
 ## First Time
-1. `sudo apt install live-build debconf-utils`
+1. `sudo apt install live-build debconf-utils` or optionally `sudo apt install live-build debconf-utils expect` if you want to use the `--log` feature of `build.sh`.
 1. `git clone https://github.com/haxwithaxe/emcomm-tools-os-community-builder-template.git emcomm-tools-os-community-builder`
 1. `cd emcomm-tools-os-community-builder`
 1. Copy `.build.sh.conf.example` to `.build.sh.conf` and edit it to have the values that match your environment.
 1. Copy any of the `*.example` scripts you want to use in `.build.sh.d` to the same filename in the same directory just without the `.example` on the end. Make sure they are executable. `copy-build-manifests.post-build` is enabled by default.
-1. `sudo ./build.sh`
+1. `sudo ./build.sh` or `sudo ./build.sh --log` if have the `expect` package installed and you want to log the output.
 
 ## Subsequent Build Runs
 1. `cd emcomm-tools-os-community-builder`
-1. `sudo ./build.sh`
+1. `sudo ./build.sh` with other optional arguments as desired.
 
 ## Build Stages
 The hook "scripts" are executed so they can be written in anything or even be compiled binaries.
@@ -66,7 +66,6 @@ When any of the "clean-all", "clean", or "build" stages fail a message is passed
 
 
 ### OnFail/OnSuccess Scripts
-
 * The first argument is the stage that failed ("clean-all", "clean", or "build").
 * The second argument is the return code of the stage.
 * The third argument is a message suitable for human consumption.
@@ -93,9 +92,10 @@ WIP
 * See [Development Cruft] in `MAP.md` for a list of files that need attention before the build system is in a production state.
 * Edit the footnotes in this file and in [MAP.md] to match the production branch if they are being kept.
 * Run `git grep 'PROD:'` and `git grep 'TEST:'` to find notes about things that must or should be changed for production.
-* Run `git grep 'FIXME:'` to find notes about things that should already have been changed long before production.
+* Run `git grep 'FIXME:'` and `git grep 'FIXME:'` to find notes about things that should already have been changed long before production.
 
 # Footnotes
-<!-- PROD: Make sure to change the links to match the branch name. -->
+<!-- PROD: Make sure to change the links to this repo to match the branch name. -->
 [Development Cruft]: https://github.com/haxwithaxe/emcomm-tools-os-community-builder-template/blob/dev/fiddle-around-and-find-out/MAP.md#development-cruft
+[lb docs]: https://github.com/haxwithaxe/emcomm-tools-os-community-builder-template/blob/dev/fiddle-around-and-find-out/MAP.md#lb-command
 [MAP.md]: https://github.com/haxwithaxe/emcomm-tools-os-community-builder-template/blob/dev/fiddle-around-and-find-out/MAP.md
