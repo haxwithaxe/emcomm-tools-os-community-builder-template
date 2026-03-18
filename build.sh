@@ -100,8 +100,21 @@ config() {
 	lb config --debian-installer live || return $?
 
 	set +x
+
+	post_config
+
 }
 
+post_config() {
+	if compgen -G 'build.sh.d/*.post-config'; then
+		echo Running post-config scripts
+		for script in build.sh.d/*.post-config; do
+			"./$script"
+		done
+	else
+		echo No post-config scripts
+	fi
+}
 
 onfail() {
 	if compgen -G 'build.sh.d/*.onfail'; then
