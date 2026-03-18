@@ -13,7 +13,7 @@
 1. `sudo ./build.sh` with other optional arguments as desired.
 
 ## Build Stages
-The hook "scripts" are executed so they can be written in anything or even be compiled binaries.
+The hook "scripts" are executed so they can be written in anything or even be compiled binaries. Each script has it's own documentation in comments at the top of the file.
 
 ### Clean Stage
 This stage runs basic cleanup on the build directory.
