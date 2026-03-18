@@ -45,6 +45,12 @@ Scripts that end in `.post-clean-all` will run in alphabetical order in this ste
 ### Build Stage
 This stage builds the live OS ISO.
 
+#### Config Step
+This step runs `lb config ...` which changes at least one file (`config/binary`). 
+* Care needs to be taken when changes are made to this step in `build.sh`.
+* It adds a `"file=/cdrom/install/preseed/preseed.cfg"` parameter to `LB_BOOTAPPEND_INSTALL` in `config/binary` even when there is already one or more there.
+* The `live` option for `lb config --build-installer` is probably the right choice to use but it seems to want an apt repo on the ISO and ignores a bunch of the `preseed.cfg`.
+
 #### Pre-Build Step
 Scripts that end in `.pre-build` will run in alphabetical order in this step.
 
@@ -79,8 +85,17 @@ These scripts are run when a build stage returns zero.
 
 Scripts that end in `.onsuccess` will run in alphabetical order in this step.
 
-`build.sh.d/notify-build-success.onsuccess.example` can be used to send notifications on "build" stage success.
+`build.sh.d/notify-build-success.onsuccess.example` can be installed and configured to send notifications on "build" stage success.
 
 
 ## Production and Production-like Prep
 WIP
+* See [Development Cruft] in `MAP.md` for a list of files that need attention before the build system is in a production state.
+* Edit the footnotes in this file and in [MAP.md] to match the production branch if they are being kept.
+* Run `git grep 'PROD:'` and `git grep 'TEST:'` to find notes about things that must or should be changed for production.
+* Run `git grep 'FIXME:'` to find notes about things that should already have been changed long before production.
+
+# Footnotes
+<!-- PROD: Make sure to change the links to match the branch name. -->
+[Development Cruft]: https://github.com/haxwithaxe/emcomm-tools-os-community-builder-template/blob/dev/fiddle-around-and-find-out/MAP.md#development-cruft
+[MAP.md]: https://github.com/haxwithaxe/emcomm-tools-os-community-builder-template/blob/dev/fiddle-around-and-find-out/MAP.md
