@@ -118,24 +118,24 @@ post_config() {
 
 onfail() {
 	if compgen -G 'build.sh.d/*.onfail'; then
-		echo Running on-fail scripts
+		echo Running on-fail scripts for $1
 		for script in build.sh.d/*.onfail; do
 			"./$script" $@
 		done
 	else
-		echo No on-fail scripts
+		echo No on-fail scripts for $1
 	fi
 }
 
 
 onsuccess() {
 	if compgen -G 'build.sh.d/*.onsuccess'; then
-		echo Running on-success scripts
+		echo Running on-success scripts for $1
 		for script in build.sh.d/*.onsuccess; do
 			"./$script" $@
 		done
 	else
-		echo No on-fail scripts
+		echo No on-success scripts for $1
 	fi
 }
 
