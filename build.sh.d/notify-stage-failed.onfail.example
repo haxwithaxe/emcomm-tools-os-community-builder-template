@@ -2,6 +2,16 @@
 #
 # Sends a notification via a ntfy.sh server on build stage failure.
 #
+# This is just an example. You will likely need to tweak it a little for your 
+#   environment. If you don't have an account on ntfy.sh or your own ntfy.sh 
+#   server there will be quite a bit of setup beyond what is in this comment.
+#   If there is another service you would like to use you can contact 
+#   haxwithaxe via the issues on this repo and request it.
+#
+# To use this hook copy the version that ends in `.example` to the same 
+#   directory without the `.example` and make sure the copy has execute 
+#   permissions set.
+#
 # `ntfyr` is a ntfy.sh client written in python. It can be installed with 
 #   `pipx` with the command `sudo pipx install --global ntfyr` for system-wide
 #   availability or `pipx install ntfyr` for individual users. For this script 
@@ -24,8 +34,8 @@
 #    ONFAIL_NOTIFICATION_CHANNEL: The ntfy.sh channel name to send the alert to.
 
 
-
 set -e -o pipefail
+
 
 run_hook() {
 	[[ -n "$ONFAIL_NOTIFICATION_CHANNEL" ]] || (echo Missing variable ONFAIL_NOTIFICATION_CHANNEL; exit 1)
@@ -37,5 +47,6 @@ run_hook() {
 	ntfyr -T "Em Comm Tools OS ${stage} Stage Failed" -t "$ONFAIL_NOTIFICATION_CHANNEL" --timestamp -m "$message"
 	set +x
 }
+
 
 source "$(dirname "$0")/common"

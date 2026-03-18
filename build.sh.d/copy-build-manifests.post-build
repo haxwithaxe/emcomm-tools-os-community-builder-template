@@ -1,11 +1,15 @@
 #!/bin/bash
 #
 # Publishes the build manifests to the sample-manifests directory.
+#
+# This hook is enabled by default. To use it just leave it as is.
+#
 # Required Environment Variables
 #    BUILD_SH_REPO_DIR: The root of the build repository. Set in `build.sh`.
 
 
 set -e -o pipefail
+
 
 run_hook() {
 	# Copy the build manifests to the samples directory
@@ -15,6 +19,7 @@ run_hook() {
 	echo "Last updated at $(date '+%Y-%m-%d %H:%M:%S %Z'), against the following commit:" > sample-manifests/last-updated.txt
 	git log -1 --oneline >> sample-manifests/last-updated.txt
 }
+
 
 # Load the shared code
 source "$(dirname "$0")/common"

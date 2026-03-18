@@ -1,4 +1,10 @@
 #!/bin/bash
+
+# This is a common framework for hook scripts.
+# 
+# To use it in a bash hook script do the following:
+# 1. Create a `run_hook` function that is the entry point to the hook and may consume arguments. The arguments it will get depend on the type of hook.
+# 2. Add the line `source "$(dirname "$0")"` somewhere after run_hook is defined.
 #
 # Required Environment Variables
 #    BUILD_SH_REPO_DIR: The root of the build repository. Set in `build.sh`.

@@ -4,6 +4,14 @@
 #
 # Clean up script for deploy-iso-locally.post-build
 #
+# This is just an example. You will likely need to tweak it a little for your 
+#   environment.
+#
+# To use this hook copy the version that ends in `.example` to the same 
+#   directory without the `.example` and make sure the copy has execute 
+#   permissions set.
+#
+#
 # Required Environment Variables
 #    BUILD_SH_REPO_DIR: The root of the build repository. Set in `build.sh`.
 #    DEST_ISO_DIR: The directory path to deploy the ISO into. Set in
@@ -16,6 +24,7 @@
 
 
 set -e -o pipefail
+
 
 run_hook() {
 	[[ -n "$BUILD_SH_REPO_DIR" ]] || (echo ERROR: BUILD_SH_REPO_DIR variable unset; exit 1)
@@ -42,5 +51,6 @@ run_hook() {
 	set -x
 	find "${DEST_ISO_DIR}" -xdev -type f -name "${DEST_ISO_FILENAME_PATTERN}" -delete
 }
+
 
 source "$(dirname "$0")/common"
