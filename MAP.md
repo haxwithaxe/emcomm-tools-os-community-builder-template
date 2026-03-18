@@ -2,8 +2,8 @@
 
 ## Live OS
 * `grep '\.flag$' *.files *.contents` in the repository root after building will show where the various flag files in the `config/includes*` end up.
-* `grep '\.flag$' sample-manifests/*.files sample-manifests/*.contents` will show the same thing just for the build that was last run by the commiter of the current git HEAD ref.
-* Everthing in `config` and `binary` are used to make the live OS and installer.
+* `grep '\.flag$' sample-manifests/*.files sample-manifests/*.contents` will show the same thing just for the build that was last run by the committer of the current git HEAD ref.
+* Everything in `config` and `binary` are used to make the live OS and installer.
   * Files in `config.` are used to make the post boot live OS.
   * Files with the `binary` suffix are used to make the live OS image itself (such as the boot loader as opposed to the running live OS).
 * Files/directories in `config/includes.chroot*` will show up in both the Live OS and installed OS.
@@ -44,7 +44,7 @@ As in the dedicated installer environment accessed from the boot menu.
 
 ## Installed OS
 * Use `preseed.cfg` to do anything you want to do during the install process.
-  * Set the path to `preseed.cfg` with `LB_DEBIAN_INSTALLER_PRESEEDFILE` in `config/binary` (example set in that config file already). # FIXME: this might be an issue since something keeps appending the `file=...` to the variable. If it isn't set in the first place it might not be an issue. verify this
+  * Set the path to `preseed.cfg` with `LB_DEBIAN_INSTALLER_PRESEEDFILE` in `config/binary` (example set in that config file already). The `lb config` command adds an extra one every time it is run so there is a `.post-config` hook to clean up after it.
 
 ### Installed OS Branding
 * Anything that needs to show up in the installed OS can be put in `config.includes.chroot_after_packages` if it isn't packaged itself.
@@ -61,22 +61,22 @@ A list of files and config blocks that need to be removed or modified before pro
   * If it is being used it should get renamed to omit the "placeholder"
   * If it isn't being used it should be removed.
 * Blocks of code are marked for removal in `config/includes.binary/install/preseed/preseed.cfg`
-* If they aren't being reused `config/includes.chroot_after_packages/first-boot.sh`, `config/includes.chroot_after_packages/etc/systemd/system/first-boot.service`, and the blocks of `config/includes.binary/install/preseed/preseed.cfg` refering to them should be removed.
+* If they aren't being reused `config/includes.chroot_after_packages/first-boot.sh`, `config/includes.chroot_after_packages/etc/systemd/system/first-boot.service`, and the blocks of `config/includes.binary/install/preseed/preseed.cfg` referring to them should be removed.
 * See [Production and Production-like Prep] in [BUILD.md]
 
 # Mapping Methodology
-Appart from just RTFM flag files were added to most of the directories under `config` and where they end up is recored conveniently in the build output manifests. The manifests from the last build are in the `sample-manifests` directory.
+Apart from just RTFM flag files were added to most of the directories under `config` and where they end up is recorded conveniently in the build output manifests. The manifests from the last build are in the `sample-manifests` directory.
 
 ## External Resources (The "M"s to RTF)
 
 ### live-build
-The system used for the official debian live OS and installer ISO builds.
+The system used for the official Debian live OS and installer ISO builds.
 * [live-build manual]
 * [customize content]
 * [customize installed packages]
 
 #### lb command
-The debian live-build utility used in `build.sh`.
+The Debian live-build utility used in `build.sh`.
 * [lb config]
 * [lb build]
 * [lb clean]
@@ -89,14 +89,14 @@ The debian live-build utility used in `build.sh`.
 
 <!-- Footnotes -->
 <!-- PROD: Make sure to change the links to this repo to match the branch name. -->
-[live-build manual]: https://live-team.pages.debian.net/live-manual/html/live-manual/index.en.html
+[automated installation with preseed]: https://www.linux.it/~ema/posts/custom-debian-installer-usb-stick/
+[BUILD.md]: https://github.com/haxwithaxe/emcomm-tools-os-community-builder-template/blob/dev/fiddle-around-and-find-out/BUILD.md
+[comprehensive example preseed.cfg]: https://github.com/paullockaby/debian-preseed/blob/main/preseed.cfg
 [customize content]: https://live-team.pages.debian.net/live-manual/html/live-manual/customizing-contents.en.html
 [customize installed packages]: https://live-team.pages.debian.net/live-manual/html/live-manual/customizing-package-installation.en.html
-[lb config]: https://manpages.debian.org/testing/live-build/lb_config.1.en.html
 [lb build]: https://manpages.debian.org/testing/live-build/lb_build.1.en.html
 [lb clean]: https://dyn.manpages.debian.org/testing/live-build/lb_clean.1.en.html
+[lb config]: https://manpages.debian.org/testing/live-build/lb_config.1.en.html
+[live-build manual]: https://live-team.pages.debian.net/live-manual/html/live-manual/index.en.html
 [preesed docs]: https://www.debian.org/releases/stable/amd64/apbs05.en.html
-[comprehensive example preseed.cfg]: https://github.com/paullockaby/debian-preseed/blob/main/preseed.cfg
-[automated installation with preseed]: https://www.linux.it/~ema/posts/custom-debian-installer-usb-stick/
 [Production and Production-like Prep]: https://github.com/haxwithaxe/emcomm-tools-os-community-builder-template/blob/dev/fiddle-around-and-find-out/BUILD.md#production-and-production-like-prep
-[Build.md]: https://github.com/haxwithaxe/emcomm-tools-os-community-builder-template/blob/dev/fiddle-around-and-find-out/BUILD.md
