@@ -87,7 +87,7 @@ The debian live-build utility used in `build.sh`.
 * [automated installation with preseed]
 
 
-# Footnotes
+<!-- Footnotes -->
 <!-- PROD: Make sure to change the links to this repo to match the branch name. -->
 [live-build manual]: https://live-team.pages.debian.net/live-manual/html/live-manual/index.en.html
 [customize content]: https://live-team.pages.debian.net/live-manual/html/live-manual/customizing-contents.en.html

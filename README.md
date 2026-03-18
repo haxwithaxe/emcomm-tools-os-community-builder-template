@@ -19,7 +19,7 @@ Some notes on what goes where when you put them in certain places is in [MAP.md]
 This repo is licensed under the GPLv3 but may be provided for use under other licenses on request. The license modification will be documented in a commit message or whereever the project keeps it's license text as a Curve25519 or PGP signed string. From a key listed [here](https://github.com/haxwithaxe.keys) or [here](https://github.com/haxwithaxe.gpg).
 
 
-# Footnotes
+<!-- Footnotes -->
 <!-- PROD: Make sure to change the links to this repo to match the branch name. -->
 [emcomm-tools-os project]: https://github.com/thetechprepper/emcomm-tools-os-community
 [live-build]: https://live-team.pages.debian.net/live-manual/html/live-manual/index.en.html

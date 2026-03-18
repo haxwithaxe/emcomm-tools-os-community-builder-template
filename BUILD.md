@@ -94,7 +94,7 @@ WIP
 * Run `git grep 'PROD:'` and `git grep 'TEST:'` to find notes about things that must or should be changed for production.
 * Run `git grep 'FIXME:'` and `git grep 'FIXME:'` to find notes about things that should already have been changed long before production.
 
-# Footnotes
+<!-- Footnotes -->
 <!-- PROD: Make sure to change the links to this repo to match the branch name. -->
 [Development Cruft]: https://github.com/haxwithaxe/emcomm-tools-os-community-builder-template/blob/dev/fiddle-around-and-find-out/MAP.md#development-cruft
 [lb docs]: https://github.com/haxwithaxe/emcomm-tools-os-community-builder-template/blob/dev/fiddle-around-and-find-out/MAP.md#lb-command
