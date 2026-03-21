@@ -49,6 +49,12 @@ clean_all() {
 
 	clean --all
 
+	set -x
+	# Completely wipe out the cache	
+	rm -rf --one-file-system "${BUILD_SH_REPO_DIR}/cache"
+
+	set +x
+
 	if compgen -G 'build.sh.d/*.post-clean-all'; then
 		echo Running post-clean-all scripts
 		for script in build.sh.d/*.post-clean-all; do
