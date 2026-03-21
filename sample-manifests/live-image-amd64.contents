@@ -403,7 +403,6 @@
 /firmware/firmware-iwlwifi_20250410-2_all.deb
 /firmware/firmware-libertas_20250410-2_all.deb
 /firmware/firmware-linux-free_20241210-2_all.deb
-/firmware/firmware-linux_20250410-2_all.deb
 /firmware/firmware-marvell-prestera_20250410-2_all.deb
 /firmware/firmware-mediatek_20250410-2_all.deb
 /firmware/firmware-misc-nonfree_20250410-2_all.deb
@@ -448,7 +447,6 @@
 /isolinux/vesamenu.c32
 /live
 /live/filesystem.packages
-/live/filesystem.packages-remove
 /live/filesystem.squashfs
 /live/initrd.img
 /live/initrd.img-6.12.74+deb13+1-amd64
@@ -1274,8 +1272,6 @@
 /pool/non-free-firmware/f/firmware-nonfree/firmware-ivtv_20250410-2_all.deb
 /pool/non-free-firmware/f/firmware-nonfree/firmware-iwlwifi_20250410-2_all.deb
 /pool/non-free-firmware/f/firmware-nonfree/firmware-libertas_20250410-2_all.deb
-/pool/non-free-firmware/f/firmware-nonfree/firmware-linux-nonfree_20250410-2_all.deb
-/pool/non-free-firmware/f/firmware-nonfree/firmware-linux_20250410-2_all.deb
 /pool/non-free-firmware/f/firmware-nonfree/firmware-marvell-prestera_20250410-2_all.deb
 /pool/non-free-firmware/f/firmware-nonfree/firmware-mediatek_20250410-2_all.deb
 /pool/non-free-firmware/f/firmware-nonfree/firmware-misc-nonfree_20250410-2_all.deb

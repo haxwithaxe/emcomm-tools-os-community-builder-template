@@ -1,2 +1,2 @@
-Last updated at 2026-03-20 23:25:04 EDT, against the following commit:
-1450b4c Added gnome and laptop packages to live hook script
+Last updated at 2026-03-21 14:20:18 EDT, against the following commit:
+669ba37 Added more to the custom config example and fixed some copy paste errors
