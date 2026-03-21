@@ -1,14 +1,10 @@
 #!/bin/bash
-
-# This is a companion to the "custom-settings/example-custom-config.conf" 
-#   example.
-# The number prefix for this hook is pretty arbitrary as long as it doesn't 
-#    rely on one or more of the other hooks. If it does rely on another hook 
-#    it needs to be numbered after the hooks it depends on.
+#
+# This example illustrates how to clean up after deploying custom configs.
 #
 # There are other parts to this example.
 #   config/custom-settings.pre-clean: The build environment clean up part of 
-#     the process.
+#     the process. (this file)
 #   config/custom-settings.pre-build: The pre-build deployment of the config 
 #     file.
 #   config/include.chroot_before_packages/example-custom-config.sh: A script 
@@ -18,12 +14,26 @@
 #     process.  # FIXME: Verify this happens for the installed OS
 #   config/hooks/live/0091-example-custom-config.hook.chroot: The hook to run 
 #     a program that consumes the config during the live OS build process.
-#     (this file)
 #   custom-settings/example-custom-config.conf: The config file to use during 
 #     the build process or to include in the live OS and/or the installed OS. 
+#
+# This is an example only.
+#
+# Required Environment Variables
+#    BUILD_SH_REPO_DIR: The root of the build repository. Set in `build.sh`.
 
-# In this hook script we need to call the program that consumes the config if 
-#   we want it to be run during the live OS build process.
-# some-program -c /etc/some-program/some-program.conf
-# Or
-# /example-custom-config.sh
+
+set -e -o pipefail
+
+
+run_hook() {
+	# Remove the config file deployed in the pre-build companion to this hook.
+	echo Removing a config file that a script used durring the build process
+	set -x
+	# The -f is just so it doesn't error out if the file isn't there
+	rm -f config/include.chroot_before_packages/etc/some-program/some-program.conf
+}
+
+
+# Load the shared code
+source "$(dirname "$0")/common"
