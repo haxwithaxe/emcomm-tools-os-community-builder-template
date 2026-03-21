@@ -1,7 +1,12 @@
 #!/bin/bash
 
 # Install software and configs required for Emcomm Tools OS
+# Install supporting packages
+# Install Gnome desktop and laptop utilities
+apt install -y gnome-core task-laptop live-task-gnome live-task-non-free-firmware-pc live-tools
 
+
+# Install Emcomm Tools tools
 EMCOMM_TOOLS_TMP="$(mktemp -d)"
 pushd "$EMCOMM_TOOLS_TMP"
 git clone https://github.com/thetechprepper/emcomm-tools-os-community.git
