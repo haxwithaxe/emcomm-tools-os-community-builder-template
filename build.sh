@@ -103,7 +103,12 @@ config() {
 
 	# FIXME: Maybe? 'live' should probably be 'cdrom' once 
 	#   packages are included in the  ISO.
-	lb config --debian-installer live || return $?
+	lb config \
+		--debian-installer live \
+		--archive-areas "main contrib non-free non-free-firmware" \
+		--backports true \
+		--proposed-updates true \
+		|| return $?
 
 	set +x
 
