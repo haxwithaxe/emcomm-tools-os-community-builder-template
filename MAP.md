@@ -46,6 +46,7 @@ As in the dedicated installer environment accessed from the boot menu.
 ## Installed OS
 * Use `preseed.cfg` to do anything you want to do during the install process.
   * Set the path to `preseed.cfg` with `LB_DEBIAN_INSTALLER_PRESEEDFILE` in `config/binary` (example set in that config file already). The `lb config` command adds an extra one every time it is run so there is a `.post-config` hook to clean up after it.
+* Use a list in `package-lists` with the suffix `.list.chroot_install` to install packages in the installed OS.
 
 ### Installed OS Branding
 * Anything that needs to show up in the installed OS can be put in `config.includes.chroot_after_packages` if it isn't packaged itself.
