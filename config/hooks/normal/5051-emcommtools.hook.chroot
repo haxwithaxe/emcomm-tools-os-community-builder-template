@@ -1,11 +1,16 @@
 #!/bin/bash
 
 # Install software and configs required for Emcomm Tools OS
+#
+# I strongly recommend building stuff ahead of time and packaging it. It will 
+#   speed up the process quite a bit and make it easier to get other people to
+#   test fixes or deploy fixes without them rolling a whole build.
 
 EMCOMM_TOOLS_TMP="$(mktemp -d)"
 pushd "$EMCOMM_TOOLS_TMP"
 git clone https://github.com/thetechprepper/emcomm-tools-os-community.git
-# Run software/config install only. Map/propigation data should probably be downloaded at runtime.
+# Run software/config install only. Map/propigation data should probably be 
+#   downloaded at runtime if that is in scope.
 #./scripts/install.sh
 /create-dated-flag.sh "/config.hooks.normal.$(basename "$0").flag" # FIXME: really install stuff
 popd
