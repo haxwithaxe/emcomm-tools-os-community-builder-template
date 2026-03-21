@@ -17,6 +17,7 @@
     * This may be a function of the `live` option passed to `lb config --debian-installer`.
 * To install from the live OS, the live OS and the installer need to have the same kernel and they might not be in sync. A script in `config/includes.chroot_after_packages` explicitly installing the right version of the kernel and removing the default version will fix that.
   * This seems to be due to a little lag in the dev cycle of the installer compared to the Debian stable updates.
+  * This might not be an issue. The GUI installer in the live desktop environment appears to be a different piece of software.
 
 ### Live OS Branding
 * The isolinux boot logo is located in `binary/isolinux/splash.png` in the build output and can be overridden with `config/includes.binary/isolinux/splash.png`.  # FIXME: Verify this by replacing it.
