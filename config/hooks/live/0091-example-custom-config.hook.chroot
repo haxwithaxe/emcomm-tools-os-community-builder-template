@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# This is a companion to the "custom-settings/example-custom-config.conf" 
+#   example.
+# The number prefix for this hook is pretty arbitrary as long as it doesn't 
+#    rely on one or more of the other hooks. If it does rely on another hook 
+#    it needs to be numbered after the hooks it depends on.
+
+# In this hook script we need to call the program that consumes the config if 
+#   we want it to be run during the live OS build process.
+# some-program -c /etc/some-program/some-program.conf
