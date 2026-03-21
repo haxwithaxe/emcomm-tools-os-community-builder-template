@@ -14,6 +14,21 @@ Instructions on how to build live OS images with this repo and details on the bu
 # Where Things Go If You Want To Do A Thing
 Some notes on what goes where when you put them in certain places is in [MAP.md]. That file also includes some notes on what to remove from this repo to use it in real development or production.
 
+# Automation
+
+## Build
+See [BUILD.md].
+
+## Insallation
+Current status is I clearly don't understand the scope or vocabulary of parts of the `preseed.cfg`. 
+* The language and keyboard selection seems to be outside thescope of the preseed system when using the ``live`` build config option.
+* The tasksel and pkgsel options also seem to have no affect when the ``live`` build option is used.
+  * The `config/package-lists/*.chroot_install` files might take care of that problem. <!-- FIXME: verify this -->
+* Everything else seems to be able to be automated when running the install from either the live OS or the install options in the boot menu.
+  * Includes powering off and ejecting the live media.
+
+The "debian-installer" and the installer used in the live OS environment aren't the same software and the latter works much better. I have not checked if the live environment installer respects the `preseed.cfg` in the ways the "debian-installer" doesn't. <!-- FIXME: verify this -->
+
 
 # License
 This repo is licensed under the GPLv3 but may be provided for use under other licenses on request. The license modification will be documented in a commit message or wherever the project keeps it's license text as a Curve25519 or PGP signed string. From a key listed [here](https://github.com/haxwithaxe.keys) or [here](https://github.com/haxwithaxe.gpg).
