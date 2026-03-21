@@ -169,7 +169,7 @@ libfido2-1:amd64	1.15.0-1+b1
 libfile-fcntllock-perl	0.22-4+b4
 libfishcamp1t64	1.2+20220607003151-3
 libfontconfig1:amd64	2.15.0-2.3
-libfreetype6:amd64	2.13.3+dfsg-1
+libfreetype6:amd64	2.13.3+dfsg-1+deb13u1
 libgcc-14-dev:amd64	14.2.0-19
 libgcc-s1:amd64	14.2.0-19
 libgdbm-compat4t64:amd64	1.24-2

@@ -428,7 +428,6 @@
 /install/gtk/vmlinuz
 /install/initrd.gz
 /install/preseed
-/install/preseed/dev.autoinstall.preseed.fragment.cfg
 /install/preseed/preseed.cfg
 /install/vmlinuz
 /isolinux
@@ -452,9 +451,9 @@
 /live/filesystem.packages-remove
 /live/filesystem.squashfs
 /live/initrd.img
-/live/initrd.img-6.12.73+deb13-amd64
+/live/initrd.img-6.12.74+deb13+1-amd64
 /live/vmlinuz
-/live/vmlinuz-6.12.73+deb13-amd64
+/live/vmlinuz-6.12.74+deb13+1-amd64
 /md5sum.README
 /md5sum.txt
 /pool
@@ -1022,7 +1021,7 @@
 /pool/main/f/fonts-dejavu/fonts-dejavu-core_2.37-8_all.deb
 /pool/main/f/fonts-dejavu/fonts-dejavu-mono_2.37-8_all.deb
 /pool/main/f/freetype
-/pool/main/f/freetype/libfreetype6_2.13.3+dfsg-1_amd64.deb
+/pool/main/f/freetype/libfreetype6_2.13.3+dfsg-1+deb13u1_amd64.deb
 /pool/main/f/fuse
 /pool/main/f/fuse/libfuse2t64_2.9.9-9_amd64.deb
 /pool/main/f/fuse3
