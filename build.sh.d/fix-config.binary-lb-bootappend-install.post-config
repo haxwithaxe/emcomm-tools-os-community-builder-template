@@ -24,4 +24,5 @@ run_hook() {
 }
 
 
+# shellcheck disable=SC1091
 source "$(dirname "$0")/common"

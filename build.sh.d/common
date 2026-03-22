@@ -15,6 +15,7 @@ set -e -o pipefail
 pushd "$BUILD_SH_REPO_DIR" >/dev/null
 
 # Load the shared config
+# shellcheck disable=SC1091
 source .build.sh.conf
 
 # onfail/onsuccess scripts get the arguments given to the `onfail`/`onsuccess` functions.

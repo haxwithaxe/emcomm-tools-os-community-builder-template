@@ -13,23 +13,27 @@ set -e -o pipefail
 
 
 run_hook() {
-	local versions_file_in_os="/etc/emcomm-tools-live-builer-version"
-	local versions_file_in_build="config/includes.chroot_after_packages${versions_file_in_os}"
+	local versions_file_in_os
+	version_file_in_os="/etc/emcomm-tools-live-builer-version"
+	local versions_file_in_build
+	versions_file_in_build="config/includes.chroot_after_packages${versions_file_in_os}"
 	if [[ "$0" =~ .*\.pre-build ]]; then
-		local git_tag="$(git tag --points-at HEAD)"
-		local parent_dir="$(dirname "$versions_file_in_build")"
-		echo Creating $versions_file_in_os
+		local git_tag
+		git_tag="$(git tag --points-at HEAD)"
+		local parent_dir
+		parent_dir="$(dirname "$versions_file_in_build")"
+		echo "Creating $versions_file_in_os"
 		set -x
 		mkdir -p "$parent_dir"
 		echo "Built at $(date '+%Y-%m-%d %H:%M:%S %Z'), against the following commit:" > "$versions_file_in_build"
 		git log -1 --oneline >> "$versions_file_in_build"
 		if [[ -n "$git_tag" ]]; then
-			echo Tag: $git_tag >> "$versions_file_in_build"
+			echo "Tag: $git_tag" >> "$versions_file_in_build"
 		else
-			echo Tag: no tag >> "$versions_file_in_build"
+			echo "Tag: no tag" >> "$versions_file_in_build"
 		fi
 	elif [[ "$0" =~ .*\.post-clean ]]; then
-		echo Removing $version_file_in_os
+		echo "Removing $version_file_in_os"
 		set -x
 		rm -f "$versions_file_in_build"
 	fi
@@ -37,4 +41,5 @@ run_hook() {
 
 
 # Load the shared code
+# shellcheck disable=SC1091
 source "$(dirname "$0")/common"

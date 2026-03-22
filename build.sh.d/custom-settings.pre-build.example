@@ -42,4 +42,5 @@ run_hook() {
 
 
 # Load the shared code
+# shellcheck disable=SC1091
 source "$(dirname "$0")/common"

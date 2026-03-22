@@ -40,14 +40,17 @@ set -e -o pipefail
 run_hook() {
 	# If the stage isn't build this hook shouldn't do anything
 	[[ "$1" != "build" ]] && return 0
-	[[ -n "$ONSUCCESS_NOTIFICATION_CHANNEL" ]] || (echo Missing variable ONSUCCESS_NOTIFICATION_CHANNEL; exit 1)
-	local stage="$(echo "$1" | sed 's/^./\U&/')"  # Title case the stage name
-	shift 2
-	local message="$@"
+	[[ -n "$ONSUCCESS_NOTIFICATION_CHANNEL" ]] || (echo "Missing variable ONSUCCESS_NOTIFICATION_CHANNEL"; exit 1)
+	local stage
+	stage="${1^}"  # Title case the stage name
+	shift 2  # stage and return code
+	local message
+	message="$*"
 	set -x
-	ntfyr -T "Em Comm Tools OS Build Finished" -t "$ONSUCCESS_NOTIFICATION_CHANNEL" --timestamp -m "$message"
+	ntfyr -T "Em Comm Tools OS $stage Finished" -t "$ONSUCCESS_NOTIFICATION_CHANNEL" --timestamp -m "$message"
 	set +x
 }
 
 
+# shellcheck disable=SC1091
 source "$(dirname "$0")/common"

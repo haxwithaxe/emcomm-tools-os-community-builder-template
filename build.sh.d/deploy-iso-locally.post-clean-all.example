@@ -27,13 +27,10 @@ set -e -o pipefail
 
 
 run_hook() {
-	[[ -n "$BUILD_SH_REPO_DIR" ]] || (echo ERROR: BUILD_SH_REPO_DIR variable unset; exit 1)
+	[[ -n "$BUILD_SH_REPO_DIR" ]] || (echo "ERROR: BUILD_SH_REPO_DIR variable unset"; exit 1)
 	pushd "$BUILD_SH_REPO_DIR" >/dev/null
 
-	# Load the shared config
-	source .build.sh.conf
-
-	[[ -n "$DEST_ISO_DIR" ]] || (echo ERROR: DEST_ISO_DIR variable unset; exit 1)
+	[[ -n "$DEST_ISO_DIR" ]] || (echo "ERROR: DEST_ISO_DIR variable unset"; exit 1)
 
 	# Build the destination filename including the git commit short hash, the date, and the time.
 	DEST_ISO_FILENAME_PATTERN="${DEST_ISO_PREFIX_BASE}*${DEST_ISO_BASE_FILENAME%.iso}-*.iso"
@@ -41,16 +38,17 @@ run_hook() {
 	# Check for input and output locations and bail out if one of them doesn't
 	#   exist.
 	if ! [ -d "$DEST_ISO_DIR" ]; then
-		echo Not deploying $SRC_ISO_FILENAME locally to $DEST_ISO_DIR/$DEST_ISO_FILENAME
-		echo ERROR: DEST_ISO_DIR "$DEST_ISO_DIR" not found
+		echo "Not deploying $SRC_ISO_FILENAME locally to $DEST_ISO_DIR/$DEST_ISO_FILENAME"
+		echo "ERROR: DEST_ISO_DIR '$DEST_ISO_DIR' not found"
 		exit 1
 	fi
 
 	# Copy the ISO to its destination.
-	echo Pruning ${DEST_ISO_FILENAME_PATTERN}*.iso locally from $DEST_ISO_DIR
+	echo "Pruning ${DEST_ISO_FILENAME_PATTERN}*.iso locally from $DEST_ISO_DIR"
 	set -x
 	find "${DEST_ISO_DIR}" -xdev -type f -name "${DEST_ISO_FILENAME_PATTERN}" -delete
 }
 
 
+# shellcheck disable=SC1091
 source "$(dirname "$0")/common"
