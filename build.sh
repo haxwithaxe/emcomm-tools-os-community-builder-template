@@ -51,7 +51,7 @@ clean_all() {
 	clean --all
 
 	set -x
-	# Completely wipe out the cache	
+	# Completely wipe out the cache
 	rm -rf --one-file-system "${BUILD_SH_REPO_DIR}/cache"
 
 	set +x

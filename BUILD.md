@@ -46,7 +46,7 @@ Scripts that end in `.post-clean-all` will run in alphabetical order in this ste
 This stage builds the live OS ISO.
 
 #### Config Step
-This step runs `lb config ...` which changes at least one file (`config/binary`). 
+This step runs `lb config ...` which changes at least one file (`config/binary`).
 * Care needs to be taken when changes are made to this step in `build.sh`.
 * It adds a `"file=/cdrom/install/preseed/preseed.cfg"` parameter to `LB_BOOTAPPEND_INSTALL` in `config/binary` even when there is already one or more there.
 * The `live` option for `lb config --build-installer` is probably the right choice to use but it seems to want an apt repo on the ISO and ignores a bunch of the `preseed.cfg`.

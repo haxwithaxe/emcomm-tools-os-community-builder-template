@@ -19,7 +19,7 @@ The booted full OS directly from the ISO.
   * Packages installed in the live OS via the `*.list` (without a stage suffix) package lists will be installed in all stages.
 * Packages in `config/packages-lists/*.list.chroot_live` are removed after the installation of the [installed OS].
 * To install from the live OS via the installer software in the GUI nothing special needs to happen.
-* To install from the live OS via the CLI (`debian-installer-launcher --plugins live`), the live OS and the [installer] need to have the same kernel and they might not be in sync. 
+* To install from the live OS via the CLI (`debian-installer-launcher --plugins live`), the live OS and the [installer] need to have the same kernel and they might not be in sync.
   * Removed -A-script-in-`config/includes.chroot_after_packages`-explicitly-installing-the-right-version-of-the-kernel-and-removing-the-default-version-will-fix-that.-
   * This seems to be due to a little lag in the dev cycle of the installer software compared to the Debian stable updates.
   * This is not an issue. The GUI installer in the live desktop environment is a different piece of software.
@@ -37,7 +37,7 @@ As in the dedicated installer environment accessed from the boot menu.
 * `/target` is the location of the installed system in the installer environment.
   * Files in the includes directories that go on the installed system can be found relative to this directory.
 * `d-i preseed/late_command ...`
-  * This is a semicolon separated list of commands. 
+  * This is a semicolon separated list of commands.
   * The `in-target` prefix is tied to only one command at a time so `in-target` and unprefixed commands can be intermixed.
   * Can be used to dump files without packaging them but the `config/includes` or `config/includes.chroot*` directories will be a cleaner option if you don't care about the files being readable in their final locations in the [live OS], [installed OS], installer, and ISO, or [live OS] and [installed OS] respectively.
   * If the command starts with `in-target` it runs in the [installed OS].

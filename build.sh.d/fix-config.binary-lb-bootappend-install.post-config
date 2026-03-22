@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Fixes magically appearing duplicate instances of the value of 
+# Fixes magically appearing duplicate instances of the value of
 #   `LB_BOOTAPPEND_INSTALL` in `config/binary`.
 #
 # `lb config` ('config' step in the 'build' stage) adds a `file=...` every time

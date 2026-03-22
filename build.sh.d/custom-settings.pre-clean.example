@@ -3,19 +3,19 @@
 # This example illustrates how to clean up after deploying custom configs.
 #
 # There are other parts to this example.
-#   config/custom-settings.pre-clean: The build environment clean up part of 
+#   config/custom-settings.pre-clean: The build environment clean up part of
 #     the process. (this file)
-#   config/custom-settings.pre-build: The pre-build deployment of the config 
+#   config/custom-settings.pre-build: The pre-build deployment of the config
 #     file.
-#   config/include.chroot_before_packages/example-custom-config.sh: A script 
+#   config/include.chroot_before_packages/example-custom-config.sh: A script
 #     that consumes the config.
-#   config/hooks/normal/5052-example-custom-config.hook.chroot: The hook to 
-#     run a program that consumes the config during the installed OS install 
+#   config/hooks/normal/5052-example-custom-config.hook.chroot: The hook to
+#     run a program that consumes the config during the installed OS install
 #     process.  # FIXME: Verify this happens for the installed OS
-#   config/hooks/live/0091-example-custom-config.hook.chroot: The hook to run 
+#   config/hooks/live/0091-example-custom-config.hook.chroot: The hook to run
 #     a program that consumes the config during the live OS build process.
-#   custom-settings/example-custom-config.conf: The config file to use during 
-#     the build process or to include in the live OS and/or the installed OS. 
+#   custom-settings/example-custom-config.conf: The config file to use during
+#     the build process or to include in the live OS and/or the installed OS.
 #
 # This is an example only.
 #

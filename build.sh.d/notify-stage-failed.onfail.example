@@ -2,27 +2,27 @@
 #
 # Sends a notification via a ntfy.sh server on build stage failure.
 #
-# This is just an example. You will likely need to tweak it a little for your 
-#   environment. If you don't have an account on ntfy.sh or your own ntfy.sh 
+# This is just an example. You will likely need to tweak it a little for your
+#   environment. If you don't have an account on ntfy.sh or your own ntfy.sh
 #   server there will be quite a bit of setup beyond what is in this comment.
-#   If there is another service you would like to use you can contact 
+#   If there is another service you would like to use you can contact
 #   haxwithaxe via the issues on this repo and request it.
 #
-# To use this hook copy the version that ends in `.example` to the same 
-#   directory without the `.example` and make sure the copy has execute 
+# To use this hook copy the version that ends in `.example` to the same
+#   directory without the `.example` and make sure the copy has execute
 #   permissions set.
 #
-# `ntfyr` is a ntfy.sh client written in python. It can be installed with 
+# `ntfyr` is a ntfy.sh client written in python. It can be installed with
 #   `pipx` with the command `sudo pipx install --global ntfyr` for system-wide
-#   availability or `pipx install ntfyr` for individual users. For this script 
+#   availability or `pipx install ntfyr` for individual users. For this script
 #   to work it needs to be available to root.
 #
-# This script also assumes that a config file is in one of the default 
+# This script also assumes that a config file is in one of the default
 #   locations. In this case either of the following are appropriate.
 # * `/root/.config/ntfyr/config.ini`
 # * `/etc/ntfyr/config.ini`
 #
-# The token or username and password are required in that config file and a 
+# The token or username and password are required in that config file and a
 #   custom server is recommended if you have the ability to self-host it.
 #
 # See https://github.com/haxwithaxe/ntfyr for more detailed info on the config

@@ -4,11 +4,11 @@
 #
 # Clean up script for deploy-iso-locally.post-build
 #
-# This is just an example. You will likely need to tweak it a little for your 
+# This is just an example. You will likely need to tweak it a little for your
 #   environment.
 #
-# To use this hook copy the version that ends in `.example` to the same 
-#   directory without the `.example` and make sure the copy has execute 
+# To use this hook copy the version that ends in `.example` to the same
+#   directory without the `.example` and make sure the copy has execute
 #   permissions set.
 #
 #

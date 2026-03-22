@@ -1,3 +1,4 @@
+#!/bin/bash
 
 if ! (return 0 2>/dev/null); then
 	echo To use this file source it and call the functions directly.

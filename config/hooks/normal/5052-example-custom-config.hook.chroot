@@ -1,34 +1,34 @@
 #!/bin/bash
 
-# This is a companion to the "custom-settings/example-custom-config.conf" 
+# This is a companion to the "custom-settings/example-custom-config.conf"
 #   example.
 #
 # There are other parts to this example.
-#   config/custom-settings.pre-clean: The build environment clean up part of 
+#   config/custom-settings.pre-clean: The build environment clean up part of
 #     the process.
-#   config/custom-settings.pre-build: The pre-build deployment of the config 
+#   config/custom-settings.pre-build: The pre-build deployment of the config
 #     file.
-#   config/include.chroot_before_packages/example-custom-config.sh: A script 
+#   config/include.chroot_before_packages/example-custom-config.sh: A script
 #     that consumes the config.
-#   config/hooks/normal/5052-example-custom-config.hook.chroot: The hook to 
-#     run a program that consumes the config during the installed OS install 
+#   config/hooks/normal/5052-example-custom-config.hook.chroot: The hook to
+#     run a program that consumes the config during the installed OS install
 #     process. (this file) # FIXME: Verify this happens for the installed OS
-#   config/hooks/live/0091-example-custom-config.hook.chroot: The hook to run 
+#   config/hooks/live/0091-example-custom-config.hook.chroot: The hook to run
 #     a program that consumes the config during the live OS build process.
-#   custom-settings/example-custom-config.conf: The config file to use during 
-#     the build process or to include in the live OS and/or the installed OS. 
+#   custom-settings/example-custom-config.conf: The config file to use during
+#     the build process or to include in the live OS and/or the installed OS.
 
 # The number prefixing the name of this file was chosen to make sure this runs
-#    after hooks that do things it needs done before running and before 
+#    after hooks that do things it needs done before running and before
 #    everything that will clean up after it.
-# In this case it doesn't do anything but if, for instance, it were to 
+# In this case it doesn't do anything but if, for instance, it were to
 #    install packages it should run before everything that cleans up after apt
 #    and dpkg. If it were to dump junk in /tmp or /var/tmp it should run before
-#    the hook that cleans up those directories. 
+#    the hook that cleans up those directories.
 # If in doubt just make sure it runs after everything except the hooks that have
 #    the word "remove" after the number prefix.
 
-# In this hook script we need to call the program that consumes the config if 
+# In this hook script we need to call the program that consumes the config if
 #   we want it to be run during the installed OS install process.
 # some-program -c /etc/some-program/some-program.conf
 # Or

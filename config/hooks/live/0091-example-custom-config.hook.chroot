@@ -1,28 +1,28 @@
 #!/bin/bash
 
-# This is a companion to the "custom-settings/example-custom-config.conf" 
+# This is a companion to the "custom-settings/example-custom-config.conf"
 #   example.
-# The number prefix for this hook is pretty arbitrary as long as it doesn't 
-#    rely on one or more of the other hooks. If it does rely on another hook 
+# The number prefix for this hook is pretty arbitrary as long as it doesn't
+#    rely on one or more of the other hooks. If it does rely on another hook
 #    it needs to be numbered after the hooks it depends on.
 #
 # There are other parts to this example.
-#   config/custom-settings.pre-clean: The build environment clean up part of 
+#   config/custom-settings.pre-clean: The build environment clean up part of
 #     the process.
-#   config/custom-settings.pre-build: The pre-build deployment of the config 
+#   config/custom-settings.pre-build: The pre-build deployment of the config
 #     file.
-#   config/include.chroot_before_packages/example-custom-config.sh: A script 
+#   config/include.chroot_before_packages/example-custom-config.sh: A script
 #     that consumes the config.
-#   config/hooks/normal/5052-example-custom-config.hook.chroot: The hook to 
-#     run a program that consumes the config during the installed OS install 
+#   config/hooks/normal/5052-example-custom-config.hook.chroot: The hook to
+#     run a program that consumes the config during the installed OS install
 #     process.  # FIXME: Verify this happens for the installed OS
-#   config/hooks/live/0091-example-custom-config.hook.chroot: The hook to run 
+#   config/hooks/live/0091-example-custom-config.hook.chroot: The hook to run
 #     a program that consumes the config during the live OS build process.
 #     (this file)
-#   custom-settings/example-custom-config.conf: The config file to use during 
-#     the build process or to include in the live OS and/or the installed OS. 
+#   custom-settings/example-custom-config.conf: The config file to use during
+#     the build process or to include in the live OS and/or the installed OS.
 
-# In this hook script we need to call the program that consumes the config if 
+# In this hook script we need to call the program that consumes the config if
 #   we want it to be run during the live OS build process.
 # some-program -c /etc/some-program/some-program.conf
 # Or

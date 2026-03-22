@@ -5,7 +5,7 @@ For context of random people reading this. The [emcomm-tools] OS is intended to 
 !!!Some of these are very bad ideas outside of this context!!!
 
 ## Mirror Snapshot for Development Environment
-It is possible to create a local mirror of the apt repos on development machines to 
+It is possible to create a local mirror of the apt repos on development machines to
 1. Speed up building the ISOs
 2. Allow for static packages or strictly controlled updates.
 * This is typically not a great idea but it would meet the goals of the project.

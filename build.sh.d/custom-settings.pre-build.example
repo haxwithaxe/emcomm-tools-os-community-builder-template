@@ -4,19 +4,19 @@
 #    process.
 #
 # There are other parts to this example.
-#   config/custom-settings.pre-clean: The build environment clean up part of 
+#   config/custom-settings.pre-clean: The build environment clean up part of
 #     the process.
-#   config/custom-settings.pre-build: The pre-build deployment of the config 
+#   config/custom-settings.pre-build: The pre-build deployment of the config
 #     file. (this file)
-#   config/include.chroot_before_packages/example-custom-config.sh: A script 
+#   config/include.chroot_before_packages/example-custom-config.sh: A script
 #     that consumes the config.
-#   config/hooks/normal/5052-example-custom-config.hook.chroot: The hook to 
-#     run a program that consumes the config during the installed OS install 
+#   config/hooks/normal/5052-example-custom-config.hook.chroot: The hook to
+#     run a program that consumes the config during the installed OS install
 #     process.  # FIXME: Verify this happens for the installed OS
-#   config/hooks/live/0091-example-custom-config.hook.chroot: The hook to run 
+#   config/hooks/live/0091-example-custom-config.hook.chroot: The hook to run
 #     a program that consumes the config during the live OS build process.
-#   custom-settings/example-custom-config.conf: The config file to use during 
-#     the build process or to include in the live OS and/or the installed OS. 
+#   custom-settings/example-custom-config.conf: The config file to use during
+#     the build process or to include in the live OS and/or the installed OS.
 #
 # This is just an example.
 #
@@ -30,13 +30,13 @@ set -e -o pipefail
 run_hook() {
 	# Copy the config to where the program that consumes it expects it to be.
 	echo Deploying a config file for a script to use durring the build process
-	# If the config file isn't required you can test if it is in the config 
+	# If the config file isn't required you can test if it is in the config
 	#    directory and exit cleanly if it isn't there.
-	#test -f custom-settings/example-custom-config.conf || exit 0 
+	#test -f custom-settings/example-custom-config.conf || exit 0
 	set -x
 	mkdir -p config/include.chroot_before_packages/etc/some-program
 	cp custom-settings/example-custom-config.conf config/include.chroot_before_packages/etc/some-program/some-program.conf
-	# See the example script that uses this at 
+	# See the example script that uses this at
 	#   "config/include.chroot_before_packages/example-custom-config.sh"
 }
 

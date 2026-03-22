@@ -20,7 +20,7 @@ Some notes on what goes where when you put them in certain places is in [MAP.md]
 See [BUILD.md].
 
 ## Insallation
-Current status is I clearly don't understand the scope or vocabulary of parts of the `preseed.cfg`. 
+Current status is I clearly don't understand the scope or vocabulary of parts of the `preseed.cfg`.
 * The language and keyboard selection seems to be outside thescope of the preseed system when using the ``live`` build config option.
 * The tasksel and pkgsel options also seem to have no affect when the ``live`` build option is used.
   * The `config/package-lists/*.chroot_install` files might take care of that problem. <!-- FIXME: verify this -->
