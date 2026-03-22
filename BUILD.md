@@ -92,6 +92,32 @@ Scripts that end in `.onsuccess` will run in alphabetical order in this step.
 
 `build.sh.d/notify-build-success.onsuccess.example` can be installed and configured to send notifications on "build" stage success.
 
+## Development
+### Add pre-commit hooks
+1. Install `shellcheck`.
+        ```sh
+        # apt install shellcheck
+        ```
+1. Insall `pre-commit`.
+        * From apt
+                ```sh
+                # apt install pre-commit
+                ```
+        * Or from pypi
+                ```sh
+                # pipx install --global pre-commit
+                ```
+1. Install pre-commit git hook.
+        ```sh
+        $ pre-commit install
+        ```
+1. Test pre-commit hooks
+        ```sh
+        $ pre-commit run --all-files
+        ```
+
+### Committing
+Don't use `--no-verify` unless it's absolutely necessary to move forward and add `no-verify` or something to that effect in the commit message if you do.
 
 ## Production and Production-like Prep
 WIP
@@ -99,6 +125,7 @@ WIP
 * Edit the footnotes in this file and in [MAP.md] to match the production branch if they are being kept.
 * Run `git grep 'PROD:'` and `git grep 'TEST:'` to find notes about things that must or should be changed for production.
 * Run `git grep 'FIXME:'` and `git grep 'FIXME:'` to find notes about things that should already have been changed long before production.
+* Run `git grep 'DEBUG:'` and `git grep 'DEBUG:'` to find notes about things that should already have been changed long before production.
 
 <!-- Footnotes -->
 <!-- PROD: Make sure to change the links to this repo to match the branch name. -->
