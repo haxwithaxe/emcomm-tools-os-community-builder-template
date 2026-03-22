@@ -24,7 +24,7 @@ bootstrap_apt() {
 # Mostly to make transfering files easier.
 install_ssh_server() {
 	apt update
-	apt install openssh-server
+	apt install -y openssh-server
 }
 
 dump_manifests() {
