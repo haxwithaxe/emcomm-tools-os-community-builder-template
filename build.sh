@@ -7,7 +7,8 @@ if [ "$(whoami)" != "root" ]; then
 	exit 1
 fi
 
-export BUILD_SH_REPO_DIR="$(dirname "$0")"
+BUILD_SH_REPO_DIR="$(dirname "$0")"
+export BUILD_SH_REPO_DIR
 
 
 print_usage() {
@@ -23,10 +24,10 @@ Usage: $(basename "$0") [-h|--help] [-b|--build] [-c|--clean|--clean-all] [--con
 		scripts, and build environment clean up.
     --config: Run just the config step of the build process.
 	--log: Log the output of this script without removing the colors in stdout.
-		The "unbuffer" command from the "expect" package is required for this 
-		to work as expected. If it is not available the build will continue 
-		without redirecting to a log file afer showing a brief message and 
-		pausing momentarily for you to read it. After the pause the script will 
+		The "unbuffer" command from the "expect" package is required for this
+		to work as expected. If it is not available the build will continue
+		without redirecting to a log file afer showing a brief message and
+		pausing momentarily for you to read it. After the pause the script will
 		continue as if this option was not given.
 	--no-log: For internal use. It just negates --log when both are used.
     --post-build: Run just the post-build scripts.
@@ -81,7 +82,7 @@ clean() {
 
 	set -x
 
-	lb clean $@ || return $?
+	lb clean "$@" || return $?
 
 	set +x
 
@@ -101,7 +102,7 @@ config() {
 
 	set -x
 
-	# FIXME: Maybe? 'live' should probably be 'cdrom' once 
+	# FIXME: Maybe? 'live' should probably be 'cdrom' once
 	#   packages are included in the  ISO.
 	lb config \
 		--debian-installer live \
@@ -129,24 +130,24 @@ post_config() {
 
 onfail() {
 	if compgen -G 'build.sh.d/*.onfail'; then
-		echo Running on-fail scripts for $1
+		echo "Running on-fail scripts for $1"
 		for script in build.sh.d/*.onfail; do
-			"./$script" $@
+			"./$script" "$@"
 		done
 	else
-		echo No on-fail scripts for $1
+		echo "No on-fail scripts for $1"
 	fi
 }
 
 
 onsuccess() {
 	if compgen -G 'build.sh.d/*.onsuccess'; then
-		echo Running on-success scripts for $1
+		echo "Running on-success scripts for $1"
 		for script in build.sh.d/*.onsuccess; do
-			"./$script" $@
+			"./$script" "$@"
 		done
 	else
-		echo No on-success scripts for $1
+		echo "No on-success scripts for $1"
 	fi
 }
 
@@ -198,8 +199,8 @@ main() {
 	local do_clean_all=false
 	local do_log=false
 	local no_log=false
-	local orig_opts="$@"
-	OPTS=$(getopt --name "$(basename "$0")" --options hbc --longoptions help,build,clean,clean-all,config,log,no-log,post-build,pre-build -- $*) || getopt_rc=$?
+	local orig_opts="$*"
+	OPTS=$(getopt --name "$(basename "$0")" --options hbc --longoptions help,build,clean,clean-all,config,log,no-log,post-build,pre-build -- "$orig_opts")
 	eval set -- "$OPTS"
 	while (($#)); do
 		case $1 in
@@ -270,7 +271,7 @@ main() {
 	if $do_log; then
 		if which -s unbuffer; then
 			# unbuffer only works on executables not functions
-			unbuffer $0 "--no-log $orig_opts" \
+			unbuffer "$0" "--no-log $orig_opts" \
 				| tee "build-$(\
 					git log -1 --abbrev-commit --oneline \
 					| cut -d ' ' -f 1\
@@ -279,22 +280,28 @@ main() {
 			exit 0
 		else
 			# In case the unbuffer executable isn't available
-			echo 'The "unbuffer" executable was not found in $PATH. The Debian '\
-				'package "expect" is needed to use the fancy logging feature.'
-			echo 'To get log in the same way without the pretty colors you '\
-				'can abort now with Ctl-c and use the following command:'
+			# shellcheck disable=SC2016
+			echo 'The "unbuffer" executable was not found in $PATH. The Debian \
+				package "expect" is needed to use the fancy logging feature.'
+			echo 'To get log in the same way without the pretty colors you \
+				can abort now with Ctl-c and use the following command:'
 			if [[ -n "$SUDO_USER" ]]; then
-				echo '$ sudo' $0 "$orig_opts" \
-				'| tee "build-$('\
-					'git log -1 --abbrev-commit --oneline '\
-					'| cut -d ' ' -f 1'\
-				')-$(date +%F-%T).log"' 
+				# shellcheck disable=SC2016
+				echo -n '$ sudo '
+				echo -n "$0 $orig_opts"
+				# shellcheck disable=SC2016
+				echo '| tee "build-$(\
+					git log -1 --abbrev-commit --oneline \
+					| cut -d " " -f 1\
+					)-$(date +%F-%T).log"'
 			else
-				echo '#' $0 "$orig_opts" \
-				'| tee "build-$('\
-					'git log -1 --abbrev-commit --oneline '\
-					'| cut -d ' ' -f 1'\
-				')-$(date +%F-%T).log"' 
+				echo -n '#'
+				echo -n "$0 $orig_opts"
+				# shellcheck disable=SC2016
+				echo '| tee "build-$(\
+					git log -1 --abbrev-commit --oneline \
+					| cut -d " " -f 1\
+					)-$(date +%F-%T).log"'
 			fi
 			sleep 5  # Give the user a moment to read
 			echo 'Now continuing with out redirecting to a log file.'
@@ -302,22 +309,28 @@ main() {
 	fi
 	# Allow clean_all or clean to be run before build when arguments are given together.
 	if $do_clean_all; then
-		clean_all \
-			&& onsuccess "clean-all" $? "Clean-all stage finished successfully" \
-			|| onfail "clean-all" "$?" "Clean-all stage failed with return code $?"
+		if clean_all; then
+			onsuccess "clean-all" $? "Clean-all stage finished successfully"
+		else
+			onfail "clean-all" "$?" "Clean-all stage failed with return code $?"
+		fi
 	fi
 	if $do_clean; then
-		clean \
-			&& onsuccess "clean" $? "Clean stage finished successfully" \
-			|| onfail "clean" "$?" "Clean stage failed with return code $?"
+		if clean; then
+			onsuccess "clean" $? "Clean stage finished successfully"
+		else
+			onfail "clean" "$?" "Clean stage failed with return code $?"
+		fi
 
 	fi
 	if $do_build; then
-		build \
-			&& onsuccess "build" $? "Build stage finished successfully" \
-			|| onfail "build" "$?" "Build stage failed with return code $?"
+		if build; then
+			onsuccess "build" $? "Build stage finished successfully"
+		else
+			onfail "build" "$?" "Build stage failed with return code $?"
+		fi
 	fi
 }
 
 
-main $* 
+main "$@"
