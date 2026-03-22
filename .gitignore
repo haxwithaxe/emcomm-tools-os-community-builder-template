@@ -30,3 +30,5 @@ build.sh.d/notify-stage-failed.onfail
 
 # build.sh logs
 *.log
+config/package-lists/prod.shared.chroot_install
+config/includes.chroot_after_packages/etc/emcomm-tools-live-builer-version
