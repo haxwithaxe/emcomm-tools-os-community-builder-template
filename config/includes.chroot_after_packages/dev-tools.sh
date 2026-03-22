@@ -29,10 +29,10 @@ install_ssh_server() {
 
 dump_manifests() {
 	echo '# dpkg --get-selections' > /tmp/installed.packages
-	echo '# find / -xdev 2>/dev/null' > /tmp/hinstalled.files
+	echo '# find / -xdev 2>/dev/null' > /tmp/installed.files
 	set -x
 	dpkg --get-selections >> /tmp/installed.packages
-	find / -xdev 2>/dev/null >> /tmp/hinstalled.files
+	find / -xdev 2>/dev/null >> /tmp/installed.files
 	set +x
 	chmod a+r /tmp/installed.packages /tmp/installed.files
 }
