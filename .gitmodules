@@ -1,0 +1,3 @@
+[submodule "config/includes.chroot_after_packages/usr/lib/x86_64-linux-gnu/calamares/modules/post-install"]
+	path = config/includes.chroot_after_packages/usr/lib/x86_64-linux-gnu/calamares/modules/post-install
+	url = https://github.com/haxwithaxe/calamares-module-post-install.git
