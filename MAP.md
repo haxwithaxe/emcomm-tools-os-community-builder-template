@@ -1,5 +1,7 @@
 # Map of what to put where to do things
 
+<a id="example-pending-verification" style="color: red;" title="Pending verification">\*</a> - Means the info needs more testing to verify it. There is a comment in the source of the document with more info.
+
 ## Live OS
 The booted full OS directly from the ISO.
 * `grep '\.flag$' *.files *.contents` in the repository root after building will show where the various flag files in the `config/includes*` end up.
@@ -25,13 +27,29 @@ The booted full OS directly from the ISO.
   * This seems to be due to a little lag in the dev cycle of the installer software compared to the Debian stable updates.
   * This is not an issue. The GUI installer in the live desktop environment is a different piece of software.
 
-### Live OS Branding
-* The isolinux boot logo is located in `binary/isolinux/splash.png` in the build output and can be overridden with `config/includes.binary/isolinux/splash.png`.  # FIXME: Verify this by replacing it.
-* The grub boot logo is located in `binary/boot/grub/splash.png` in the build output and can be overridden with `config/includes.binary/boot/grub/splash.png`.  # FIXME: Verify this by replacing it.
+### Live OS Installer
+The installer used in the GUI live OS is called `calamares`.
+* It does not use the preseed files at all.
+* It dumps big chunks of the live OS to disk as the bootstrap environment so almost everything done to the live OS in the build process transfers over.
+  * I think that means the installer can run entirely offline without adding an apt repo to the ISO assuming the installed OS doesn't need any packages the live OS doesn't have.<a id="installer-offline-maybe" style="color: red;" title="Pending verification">\*</a>  <!-- FIXME: verify this -->
+* It has configs in `/etc/calamares/`.
+* It explicitly removes a bunch of live OS related packages when it installs by default.
+  * These are specified in `/etc/calamares/modules/packages.conf`.
+* It appears realatively easy to make custom modules. [Python example](https://github.com/calamares/calamares-extensions/blob/calamares/modules/slowpython/main.py).
+  * Does not require building the installer from source. See [INSTALLER_MODDING.md] for more info.
+* [packages.conf docs](https://github.com/calamares/calamares/blob/calamares/src/modules/packages/packages.conf)
+* I created a [post-install module] that runs arbitrary commands. It is already added to this repo as a submodule. It's super simple to make a python based module.
 
+#### Live OS Installer Branding
+* Calamares has baked in rebranding support.
+
+### Live OS Branding
+* The isolinux boot logo is located in `binary/isolinux/splash.png` in the build output and can be overridden with `config/includes.binary/isolinux/splash.png`.<a id="isolinux-boot-logo" style="color: red;" title="Pending verification">\*</a> <!-- FIXME: Verify this by replacing it. -->
+* The grub boot logo is located in `binary/boot/grub/splash.png` in the build output and can be overridden with `config/includes.binary/boot/grub/splash.png`.<a id="grub-boot-logo" style="color: red;" title="Pending verification">\*</a> <!-- FIXME: Verify this by replacing it. -->
 
 ## Installer
 As in the dedicated installer environment accessed from the boot menu.
+* I recommend disabling this entirely or getting it set in such a way that it only copies the live OS. It is a little buggy.
 * Not much to do to the installer.
 * The `preseed.cfg` lives in `config/includes.binary/install/preseed/preseed.cfg`. It isn't used entirely.
 * Potentially useful options for the `preseed.cfg` in this [comprehensive example preseed.cfg].
@@ -51,9 +69,11 @@ As in the dedicated installer environment accessed from the boot menu.
 
 
 ## Installed OS
-* Use `preseed.cfg` to do anything you want to do during the install process.
+* Use `preseed.cfg` to do anything you want to do during the install process via the [Installer](#installer) from the boot menu.
   * Set the path to `preseed.cfg` with `LB_DEBIAN_INSTALLER_PRESEEDFILE` in `config/binary` (example set in that config file already). The `lb config` command adds an extra one every time it is run so there is a `.post-config` hook to clean up after it.
-* Use a list in `package-lists` with the suffix `.list.chroot_install` to install packages in the installed OS.
+* Use the calamares config to do anything you want to do from the [live OS installer](#live-os-installer).
+* Use a list in `package-lists` with the suffix `.list.chroot` to install packages in the installed OS.
+
 
 ### Installed OS Branding
 * Anything that needs to show up in the installed OS can be put in `config.includes.chroot_after_packages` if it isn't packaged itself.
@@ -69,9 +89,9 @@ A list of files and config blocks that need to be removed or modified before pro
 * `config/package-lists/placeholder.emcomm-tools.list.chroot`
   * If it is being used it should get renamed to omit the "placeholder"
   * If it isn't being used it should be removed.
-* Blocks of code are marked for removal in `config/includes.binary/install/preseed/preseed.cfg`.
+* There are some examples in `config/includes.binary/install/preseed/preseed.cfg` that should be removed.
 * If they aren't being reused `config/includes.chroot_after_packages/first-boot.sh`, `config/includes.chroot_after_packages/etc/systemd/system/first-boot.service`, and the blocks of `config/includes.binary/install/preseed/preseed.cfg` referring to them should be removed.
-* See [Production and Production-like Prep] in [BUILD.md]
+* See [Production and Production-like Prep] in [BUILD.md].
 
 
 ## General Notes
@@ -84,6 +104,7 @@ Apart from just RTFM, flag files were added to most of the directories under `co
 
 ## External Resources (The "M"s that were RTFed)
 * [The official debian build config]
+* [Calamares installer and debian packaging docs]
 
 ### live-build
 The system used for the official Debian live OS and installer ISO builds.
@@ -121,3 +142,5 @@ The Debian live-build utility used in `build.sh`.
 [installed OS]: https://github.com/haxwithaxe/emcomm-tools-os-community-builder-template/blob/dev/fiddle-around-and-find-out/MAP.md#installed-os
 [live OS]: https://github.com/haxwithaxe/emcomm-tools-os-community-builder-template/blob/dev/fiddle-around-and-find-out/MAP.md#live-os
 [installer]: https://github.com/haxwithaxe/emcomm-tools-os-community-builder-template/blob/dev/fiddle-around-and-find-out/MAP.md#installer
+[post-install module]: https://github.com/haxwithaxe/calamares-module-post-install
+[Calamares installer and debian packaging docs]: https://github.com/haxwithaxe/emcomm-tools-os-community-builder-template/blob/dev/fiddle-around-and-find-out/INSTALLER_MODDING.md#external-resources
