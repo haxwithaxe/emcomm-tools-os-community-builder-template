@@ -200,7 +200,8 @@ main() {
 	local do_log=false
 	local no_log=false
 	local orig_opts="$*"
-	OPTS=$(getopt --name "$(basename "$0")" --options hbc --longoptions help,build,clean,clean-all,config,log,no-log,post-build,pre-build -- "$orig_opts")
+	# shellcheck disable=SC2086  # Quoting this makes all args one string
+	OPTS=$(getopt --name "$(basename "$0")" --options hbc --longoptions help,build,clean,clean-all,config,log,no-log,post-build,pre-build -- $orig_opts)
 	eval set -- "$OPTS"
 	while (($#)); do
 		case $1 in
@@ -271,7 +272,7 @@ main() {
 	if $do_log; then
 		if which -s unbuffer; then
 			# unbuffer only works on executables not functions
-			unbuffer "$0" "--no-log $orig_opts" \
+			unbuffer "$0" --no-log "$orig_opts" \
 				| tee "build-$(\
 					git log -1 --abbrev-commit --oneline \
 					| cut -d ' ' -f 1\
