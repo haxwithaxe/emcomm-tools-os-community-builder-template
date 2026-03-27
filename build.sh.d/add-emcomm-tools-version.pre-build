@@ -14,7 +14,7 @@ set -e -o pipefail
 
 run_hook() {
 	local versions_file_in_os
-	version_file_in_os="/etc/emcomm-tools-live-builer-version"
+	versions_file_in_os="/etc/emcomm-tools-live-builer-version"
 	local versions_file_in_build
 	versions_file_in_build="config/includes.chroot_after_packages${versions_file_in_os}"
 	if [[ "$0" =~ .*\.pre-build ]]; then
@@ -33,7 +33,7 @@ run_hook() {
 			echo "Tag: no tag" >> "$versions_file_in_build"
 		fi
 	elif [[ "$0" =~ .*\.post-clean ]]; then
-		echo "Removing $version_file_in_os"
+		echo "Removing $versions_file_in_os"
 		set -x
 		rm -f "$versions_file_in_build"
 	fi
