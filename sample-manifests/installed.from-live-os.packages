@@ -1791,7 +1791,6 @@ liburi-perl					install
 liburiparser1:amd64				install
 libusb-1.0-0:amd64				install
 libusbmuxd-2.0-7:amd64				install
-libutempter0:amd64				install
 libuuid1:amd64					install
 libuv1t64:amd64					install
 libv4l-0t64:amd64				install
@@ -2123,7 +2122,6 @@ sound-theme-freedesktop				install
 speech-dispatcher				install
 speech-dispatcher-audio-plugins:amd64		install
 speech-dispatcher-espeak-ng			install
-sq						install
 squashfs-tools					install
 sqv						install
 sse3-support					install
@@ -2345,7 +2343,6 @@ xserver-xorg-video-qxl				install
 xserver-xorg-video-radeon			install
 xserver-xorg-video-vesa				install
 xserver-xorg-video-vmware			install
-xterm						install
 xwayland					install
 xxkb						install
 xz-utils					install
