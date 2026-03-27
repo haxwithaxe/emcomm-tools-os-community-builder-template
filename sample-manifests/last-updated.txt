@@ -1,2 +1,2 @@
-Last updated at 2026-03-26 21:04:24 EDT, against the following commit:
-645a034 Filled out internal links in MAP.md
+Last updated at 2026-03-27 00:59:47 EDT, against the following commit:
+f054fab Updated post-install calamares module

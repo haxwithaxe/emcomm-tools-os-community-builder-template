@@ -642,7 +642,6 @@ hdate-applet	0.15.11-4+b1
 hdparm	9.65+ds-1.1
 heif-gdk-pixbuf:amd64	1.19.8-1
 heif-thumbnailer	1.19.8-1
-helvum	0.5.1+20240829-2
 hicolor-icon-theme	0.18-2
 hostname	3.25
 hspell	1.4-3.1
@@ -1360,8 +1359,6 @@ liblttng-ust1t64:amd64	2.13.9-1
 liblua5.2-0:amd64	5.2.4-3+b3
 liblua5.3-0:amd64	5.3.6-2+b4
 liblua5.4-0:amd64	5.4.7-1+b2
-libluajit-5.1-2:amd64	2.1.0+openresty20250117-2
-libluajit-5.1-common	2.1.0+openresty20250117-2
 liblvm2cmd2.03:amd64	2.03.31-2
 liblwp-mediatypes-perl	6.04-2
 liblwp-protocol-https-perl	6.14-1
@@ -1402,7 +1399,6 @@ libmpeg2encpp-2.1-0t64:amd64	1:2.1.0+debian-8.1+b1
 libmpfr6:amd64	4.2.2-1
 libmpg123-0t64:amd64	1.32.10-1+deb13u1
 libmplex2-2.1-0t64:amd64	1:2.1.0+debian-8.1+b1
-libmsgpack-c2:amd64	6.0.1-3+b1
 libmsgraph-1-1:amd64	0.3.3-3
 libmspack0t64:amd64	0.11-1.1+b1
 libmspub-0.1-1:amd64	0.1.4-3+b5
@@ -1850,7 +1846,6 @@ libtomlplusplus3t64:amd64	3.4.0+ds-0.2+b1
 libtotem-plparser-common	3.26.6-2
 libtotem-plparser18:amd64	3.26.6-2
 libtotem0:amd64	43.2-3
-libtree-sitter0.22:amd64	0.22.6-6+b1
 libtry-tiny-perl	0.32-1
 libts0t64:amd64	1.22-1.1+b1
 libtsan2:amd64	14.2.0-19
@@ -1876,7 +1871,6 @@ libudisks2-0:amd64	2.10.1-12.1+deb13u1
 libuim-custom2:amd64	1:1.9.6-1
 libuim-scm0:amd64	1:1.9.6-1
 libuim8:amd64	1:1.9.6-1
-libunibilium4:amd64	2.1.1-2+b1
 libunibreak6:amd64	6.1-3
 libunistring5:amd64	1.3-2
 libunity-protocol-private0:amd64	7.1.4+19.04.20190319-6.1+b1
@@ -1894,7 +1888,6 @@ liburi-perl	5.30-1
 liburiparser1:amd64	0.9.8+dfsg-2
 libusb-1.0-0:amd64	2:1.0.28-1
 libusbmuxd-2.0-7:amd64	2.1.0-1+b1
-libutempter0:amd64	1.2.1-4
 libuuid1:amd64	2.41-5
 libuv1t64:amd64	1.50.0-2
 libv4l-0t64:amd64	1.30.1-1
@@ -1919,7 +1912,6 @@ libvpl2	1:2.14.0-1+b1
 libvpx9:amd64	1.15.0-2.1+deb13u1
 libvte-2.91-0:amd64	0.80.1-1
 libvte-2.91-common	0.80.1-1
-libvterm0:amd64	0.3.3-3+b1
 libvulkan1:amd64	1.4.309.0-1
 libwacom-common	2.14.0-1
 libwacom9:amd64	2.14.0-1
@@ -2075,8 +2067,6 @@ loupe	48.1-3
 low-memory-monitor	2.1-2+b1
 lsb-release	12.1-1
 lsof	4.99.4+dfsg-2
-lua-lpeg:amd64	1.1.0-2
-lua-luv:amd64	1.48.0-2-3
 luit	2.0.20240910-1
 lv	4.51-10
 lvm2	2.03.31-2
@@ -2154,10 +2144,7 @@ nautilus-data	48.3-2
 nautilus-extension-gnome-terminal:amd64	3.56.2-2
 ncurses-base	6.5+20250216-2
 ncurses-bin	6.5+20250216-2
-neovim	0.10.4-8
-neovim-runtime	0.10.4-8
 netbase	6.5
-netcat-openbsd	1.229-1
 network-manager	1.52.1-1
 network-manager-l10n	1.52.1-1
 nftables	1.1.3-1
@@ -2166,11 +2153,7 @@ nm-connection-editor	1.36.0-3+b1
 node-clipboard	2.0.11+ds+~cs9.6.11-1
 node-normalize.css	8.0.1-5
 node-prismjs	1.29.0+dfsg+~1.26.0-1
-notification-daemon	3.20.0-5
 ntfs-3g	1:2022.10.3-5
-ntpsec	1.2.3+dfsg1-8
-ntpsec-ntpdate	1.2.3+dfsg1-8
-ntpsec-ntpdig	1.2.3+dfsg1-8
 ocl-icd-libopencl1:amd64	2.3.3-1
 opencc	1.1.9+ds1-1+b1
 openssh-client	1:10.0p1-7+deb13u1
@@ -2228,16 +2211,12 @@ python3-dbus	1.4.0-1
 python3-distro	1.9.0-1
 python3-gi	3.50.0-4+b1
 python3-gi-cairo	3.50.0-4+b1
-python3-greenlet	3.1.0-1+b2
 python3-ibus-1.0	1.5.32-2
 python3-idna	3.10-1
 python3-libvoikko	4.3.2-1
 python3-louis	3.33.0-1
 python3-minimal	3.13.5-1
-python3-msgpack	1.0.3-3+b4
-python3-ntp	1.2.3+dfsg1-8
 python3-psutil	7.0.0-2
-python3-pynvim	0.5.2-2
 python3-requests	2.32.3+dfsg-5+deb13u1
 python3-setproctitle:amd64	1.3.6-2
 python3-smbc	1.0.25.1-1+b4
@@ -2270,7 +2249,6 @@ rygel-tracker	0.44.2-1
 samba-libs:amd64	2:4.22.8+dfsg-0+deb13u1
 sane-airscan	0.99.35-1
 sane-utils	1.3.1-3+b1
-screen	4.9.1-3
 seahorse	47.0.1-2
 sed	4.9-2
 sensible-utils	0.0.25
@@ -2534,7 +2512,6 @@ x11-xserver-utils	7.7+11
 xauth	1:1.1.2-1.1
 xbitmaps	1.1.1-2.2
 xbrlapi	6.7-3.1+deb13u3
-xclip	0.13-4
 xcvt	0.1.3-1
 xdg-dbus-proxy	0.1.6-1
 xdg-desktop-portal	1.20.3+ds-1
@@ -2583,9 +2560,7 @@ xserver-xorg-video-qxl	0.1.6-1.1
 xserver-xorg-video-radeon	1:22.0.0-1
 xserver-xorg-video-vesa	1:2.6.0-2
 xserver-xorg-video-vmware	1:13.4.0-1
-xterm	398-1
 xwayland	2:24.1.6-1
-xxd	2:9.1.1230-2
 xxkb	1.11.1-3
 xz-utils	5.8.1-1
 yelp	42.2-4
