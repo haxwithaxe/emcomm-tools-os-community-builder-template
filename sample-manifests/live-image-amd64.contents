@@ -445,6 +445,9 @@
 /isolinux/stdmenu.cfg
 /isolinux/utilities.cfg
 /isolinux/vesamenu.c32
+/late_commands
+/late_commands/include-iso-in-installed-os.sh
+/late_commands/test.sh
 /live
 /live/filesystem.packages
 /live/filesystem.squashfs
@@ -971,6 +974,8 @@
 /pool/main/c/ca-certificates/ca-certificates_20250419_all.deb
 /pool/main/c/cairo
 /pool/main/c/cairo/libcairo2_1.18.4-1+b1_amd64.deb
+/pool/main/c/calamares
+/pool/main/c/calamares/calamares_3.3.14-1_amd64.deb
 /pool/main/c/carl9170fw
 /pool/main/c/carl9170fw/firmware-carl9170_1.9.9-450-gad1c721+dfsg-0.1_all.deb
 /pool/main/c/cdebconf
