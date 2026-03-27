@@ -1,6 +1,6 @@
 # Random Notes
 
-For context of random people reading this. The [emcomm-tools] OS is intended to be used entirely offline and to be a dedicated use appliance based on Debian but not following it religiously.
+For the context of random people reading this. The [emcomm-tools] OS is intended to be used entirely offline and to be a dedicated use appliance based on Debian but not following it religiously.
 
 !!!Some of these are very bad ideas outside of this context!!!
 
